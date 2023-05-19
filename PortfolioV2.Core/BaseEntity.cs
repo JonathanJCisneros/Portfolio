@@ -1,4 +1,4 @@
-﻿namespace PortfolioV2.Core.Entities
+﻿namespace PortfolioV2.Core
 {
     public class BaseEntity
     {

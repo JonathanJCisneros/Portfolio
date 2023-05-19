@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS8618
 
 
-namespace PortfolioV2.Core.Entities
+namespace PortfolioV2.Core
 {
     public class Inquiry : BaseEntity
     {

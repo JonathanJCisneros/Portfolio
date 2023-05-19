@@ -1,23 +1,28 @@
-﻿using PortfolioV2.Core.Entities;
+﻿using PortfolioV2.Core;
+using PortfolioV2.Repository.Interfaces;
 using PortfolioV2.Service.Interfaces;
 
 namespace PortfolioV2.Service
 {
     public class UserService : IUserService
     {
+        private readonly IUserRepository _userRepository;
+
+        public UserService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public async Task<bool> CheckById(string id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<string> Create(User entity)
+        public async Task<User> CheckByEmail(string email)
         {
-            throw new NotImplementedException();
-        }
+            User user = await _userRepository.CheckByEmail(email);
 
-        public async Task<bool> Delete(string id)
-        {
-            throw new NotImplementedException();
+            return user;
         }
 
         public async Task<User> Get(string id)
@@ -30,9 +35,20 @@ namespace PortfolioV2.Service
             throw new NotImplementedException();
         }
 
+        public async Task<string> Create(User user)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<string> Update(User entity)
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> Delete(string id)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

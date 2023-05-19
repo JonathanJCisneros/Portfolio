@@ -1,4 +1,4 @@
-﻿using PortfolioV2.Core.Entities;
+﻿using PortfolioV2.Core;
 using PortfolioV2.Repository.Interfaces;
 using System;
 using System.Collections.Generic;

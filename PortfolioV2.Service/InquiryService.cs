@@ -1,4 +1,4 @@
-﻿using PortfolioV2.Core.Entities;
+﻿using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
 
 namespace PortfolioV2.Service

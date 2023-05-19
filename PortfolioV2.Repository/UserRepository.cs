@@ -1,4 +1,4 @@
-﻿using PortfolioV2.Core.Entities;
+﻿using PortfolioV2.Core;
 using PortfolioV2.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,11 @@ namespace PortfolioV2.Repository
         }
         
         public async Task<bool> CheckById(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<User> CheckByEmail(string email)
         {
             throw new NotImplementedException();
         }

@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS8618
 
 
-namespace PortfolioV2.Core.Entities
+namespace PortfolioV2.Core
 {
     public class User : BaseEntity
     {
@@ -12,5 +12,7 @@ namespace PortfolioV2.Core.Entities
         public string Email { get; set; }
 
         public string Password { get; set; }
+
+        public DateTime LastLoggedIn { get; set; }
     }
 }

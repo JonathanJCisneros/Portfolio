@@ -16,6 +16,8 @@ builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInquiryService, InquiryService>();
 
+builder.Services.ConfigureApplicationCookie(opts => opts.LoginPath = "/User/Login");
+
 WebApplication? app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
