@@ -1,6 +1,5 @@
 ﻿#pragma warning disable CS8618
 
-
 namespace PortfolioV2.Core
 {
     public class User : BaseEntity

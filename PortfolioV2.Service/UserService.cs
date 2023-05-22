@@ -25,6 +25,27 @@ namespace PortfolioV2.Service
             return user;
         }
 
+        public async Task<AuthorizeResult> Authorize(string email, string password)
+        {
+            User user = await CheckByEmail(email);
+
+            if(user == null)
+            {
+                return new AuthorizeResult();
+            }
+
+
+
+            AuthorizeResult result = new()
+            {
+                Id = user.Id.ToString(),
+                Name = $"{user.FirstName} {user.LastName}",
+                Email = user.Email
+            };
+
+            return result;
+        }
+
         public async Task<User> Get(string id)
         {
             throw new NotImplementedException();

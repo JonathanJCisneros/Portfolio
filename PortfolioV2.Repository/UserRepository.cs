@@ -12,6 +12,8 @@ namespace PortfolioV2.Repository
     {
         private readonly AppDb Db;
 
+        private readonly string email = "jonathan.cisneros@portfolio.com";
+
         public UserRepository(AppDb db) 
         {
             Db = db; 
@@ -22,9 +24,23 @@ namespace PortfolioV2.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<User> CheckByEmail(string email)
+        public async Task<User?> CheckByEmail(string email)
         {
-            throw new NotImplementedException();
+            if(email != this.email)
+            {
+                return null;
+            }
+
+            User user = new()
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Jonathan",
+                LastName = "Cisneros",
+                Email = email,
+
+            };
+
+            return user;
         }
 
         public async Task<User> Get(string id)

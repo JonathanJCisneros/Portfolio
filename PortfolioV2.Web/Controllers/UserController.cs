@@ -1,9 +1,12 @@
 ﻿#pragma warning disable CS8603
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
 using PortfolioV2.Web.Models;
+using System.Security.Claims;
 
 namespace PortfolioV2.Web.Controllers
 {
@@ -21,16 +24,30 @@ namespace PortfolioV2.Web.Controllers
             _logger = logger;
         }
 
-        private string UserId => HttpContext.Session.GetString("UserId");
+        private async Task SetAuthCookie(AuthorizeResult result)
+        {
+            List<Claim> claims = new()
+            {
+                new Claim(ClaimTypes.Sid, result.Id),
+                new Claim(ClaimTypes.Name, result.Name),
+                new Claim(ClaimTypes.Email, result.Email)
+            };
 
-        private bool LoggedIn => UserId != null;
+            ClaimsIdentity claimsIdentity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            ClaimsPrincipal principle = new(claimsIdentity);
+
+            AuthenticationProperties authenticationProperties = new()
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTime.UtcNow.AddDays(3)
+            };
+
+            await HttpContext.SignInAsync(principle, authenticationProperties);
+        }
 
         public IActionResult Login()
         {
-            if (UserId != null)
-            {
-                return RedirectToAction("Dashboard");
-            }
 
             return View();
         }
@@ -38,11 +55,6 @@ namespace PortfolioV2.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            if (UserId != null)
-            {
-                return RedirectToAction("Dashboard");
-            }
-
             model = LoginModel.Format(model);
 
             if(!ModelState.IsValid)
@@ -50,37 +62,27 @@ namespace PortfolioV2.Web.Controllers
                 return Login();
             }
 
-            User dbUser = await _userService.CheckByEmail(model.Email);
+            AuthorizeResult status = await _userService.Authorize(model.Email, model.Password);
 
-            if(dbUser == null)
+            if(!status.IsAuthorized)
             {
                 ModelState.AddModelError("Email", "not found");
                 return Login();
             }
 
-            HttpContext.Session.SetString("UserId", dbUser.Id.ToString());
+            await SetAuthCookie(status);
 
             return RedirectToAction("Dashboard");
         }
 
         public IActionResult Register()
         {
-            if (UserId != null)
-            {
-                return RedirectToAction("Dashboard");
-            }
-
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
-            if (UserId != null)
-            {
-                return RedirectToAction("Dashboard");
-            }
-
             model = RegisterModel.Format(model);
 
             if (!ModelState.IsValid)
@@ -107,22 +109,23 @@ namespace PortfolioV2.Web.Controllers
 
             if (saved == null) 
             {
-                ViewBag.Error = "Oops, an error occurred";
+                ViewBag.Error = "Oops, we could not save your account at this time";
                 return Register();
             }
-
-            HttpContext.Session.SetString("UserId", saved.ToString());
 
             return RedirectToAction("Dashboard");
         }
 
+        [Authorize]
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync();
+
+            return Login();
+        }
+
         public async Task<IActionResult> Dashboard()
         {
-            if (UserId == null)
-            {
-                return Login();
-            }
-
             return View();
         }
     }

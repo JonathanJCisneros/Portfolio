@@ -1,4 +1,4 @@
-namespace PortfolioV2.Models
+namespace PortfolioV2.Web.Models
 {
     public class ErrorViewModel
     {

@@ -1,18 +1,31 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Portfolio</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    @await RenderSectionAsync("Styles", required: false)
-</head>
-<body class="container">
-    @RenderBody()
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - Portfolio</title>
+        <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />        
+        @await RenderSectionAsync("Styles", required: false)
+    </head>
+    <body>
+        <div class="background"></div>
+        @RenderBody()
+        <footer> 
+            <small>&copy; @DateTime.Now.ToString("yyyy"), Jonathan Cisneros. All Rights Reserved</small> 
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+        @if (!Context.Request.Host.Value.Contains("localhost"))
+        {
+            <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js" asp-append-version="true"></script>
+        }
+        else
+        {
+            <script src="https://unpkg.com/vue@3/dist/vue.global.js" asp-append-version="true"></script>
+        }
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
 </html>

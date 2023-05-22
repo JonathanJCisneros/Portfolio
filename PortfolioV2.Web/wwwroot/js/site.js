@@ -1,4 +1,34 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿const { createApp } = Vue;
 
-// Write your JavaScript code.
+function setTextAnimation(delay, duration, strokeWidth, timingFunction, strokeColor, repeat) {
+    let paths = document.querySelectorAll("path");
+    let mode = repeat ? 'infinite' : 'forwards'
+    for (let i = 0; i < paths.length; i++) {
+        const path = paths[i];
+        const length = path.getTotalLength();
+        path.style["stroke-dashoffset"] = `${length}px`;
+        path.style["stroke-dasharray"] = `${length}px`;
+        path.style["stroke-width"] = `${strokeWidth}px`;
+        path.style["stroke"] = `${strokeColor}`;
+        path.style["animation"] = `${duration}s svg-text-anim ${mode} ${timingFunction}`;
+        path.style["animation-delay"] = `${i * delay}s`;
+    }
+}
+setTextAnimation(0.1, 2.7, 4, 'linear', '#ffffff', false);
+
+$(function () {
+    $(".startTyper").typed({
+        strings: ["Hi, my name is Jonathan", "I am a Software Developer", "I am also a business enthusiast", "Best part, I am a hiking nut :-)", "Let me know if I can be helpful", "Have a great one!"],
+        typeSpeed: 50,
+        loop: true,
+        loopCount: false,
+    });
+});
+
+const form = createApp({
+
+});
+
+if (document.getElementById('inquiry')) {
+    form.mount('#inquiry');
+}   
