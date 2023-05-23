@@ -11,7 +11,9 @@
     </head>
     <body>
         <div class="background"></div>
-        @RenderBody()
+        <div class="site-wrapper">
+            @RenderBody()
+        </div>        
         <footer> 
             <small>&copy; @DateTime.Now.ToString("yyyy"), Jonathan Cisneros. All Rights Reserved</small> 
         </footer>

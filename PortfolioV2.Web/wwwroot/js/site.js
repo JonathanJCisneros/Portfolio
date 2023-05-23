@@ -14,15 +14,18 @@ function setTextAnimation(delay, duration, strokeWidth, timingFunction, strokeCo
         path.style["animation-delay"] = `${i * delay}s`;
     }
 }
+
 setTextAnimation(0.1, 2.7, 4, 'linear', '#ffffff', false);
 
 $(function () {
-    $(".startTyper").typed({
-        strings: ["Hi, my name is Jonathan", "I am a Software Developer", "I am also a business enthusiast", "Best part, I am a hiking nut :-)", "Let me know if I can be helpful", "Have a great one!"],
-        typeSpeed: 50,
-        loop: true,
-        loopCount: false,
-    });
+    if ($('.startTyper')[0]) {
+        $(".startTyper").typed({
+            strings: ["Hi, my name is Jonathan", "I am a Software Developer", "I am also a business enthusiast", "Best part, I am a hiking nut :-)", "Let me know if I can be helpful", "Have a great one!"],
+            typeSpeed: 50,
+            loop: true,
+            loopCount: false,
+        });
+    }
 });
 
 const form = createApp({

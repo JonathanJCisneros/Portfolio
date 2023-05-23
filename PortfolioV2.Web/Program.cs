@@ -35,4 +35,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "api",
+    pattern: "{area:exists}/{controller=Inquiry}/{action=Test}/{id?}");
+
 app.Run();

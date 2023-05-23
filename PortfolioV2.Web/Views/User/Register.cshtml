@@ -1,0 +1,51 @@
+﻿@model RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+}
+
+<div class="register-title">
+    <h1>Register</h1>
+</div>
+<form asp-controller="User" asp-action="Register" method="POST">
+    <div>
+        <label asp-for="FirstName" class="form-label"></label>
+        <span asp-validation-for="FirstName" class="error"></span>
+        <input asp-for="FirstName" class="form-control">
+    </div>
+    <div>
+        <label asp-for="LastName" class="form-label"></label>
+        <span asp-validation-for="LastName" class="error"></span>
+        <input asp-for="LastName" class="form-control">
+    </div>
+    <div>
+        <label asp-for="Email" class="form-label"></label>
+        <span asp-validation-for="Email" class="error"></span>
+        <input asp-for="Email" class="form-control">
+    </div>
+    <div>
+        <label asp-for="Password" class="form-label"></label>
+        <span asp-validation-for="Password" class="error"></span>
+        <input asp-for="Password" class="form-control">
+    </div>
+    <div>
+        <label asp-for="ConfirmPassword" class="form-label"></label>
+        <span asp-validation-for="ConfirmPassword" class="error"></span>
+        <input asp-for="ConfirmPassword" class="form-control">
+    </div>
+    <div>
+        <label asp-for="AdminPass" class="form-label"></label>
+        <span asp-validation-for="AdminPass" class="error"></span>
+        <input asp-for="AdminPass" class="admin-pass form-control">
+    </div>
+    <div class="submit-container">
+        <button type="submit" class="submit-button">Register</button>
+    </div>    
+</form>
+<div class="back">
+    <a asp-controller="Home" asp-action="Index" class="submit-button return">Got lost? Let's go home!</a>
+</div>

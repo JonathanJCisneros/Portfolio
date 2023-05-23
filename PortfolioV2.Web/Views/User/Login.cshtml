@@ -1,0 +1,31 @@
+﻿@model LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+}
+
+<div class="login-title">
+    <h1>Login</h1>
+</div>
+<form asp-controller="User" asp-action="Login" method="POST">
+    <div>
+        <label asp-for="Email" class="form-label"></label>
+        <span asp-validation-for="Email" class="error"></span>
+        <input asp-for="Email" class="form-control">
+    </div>
+    <div>
+        <label asp-for="Password" class="form-label"></label>
+        <span asp-validation-for="Password" class="error"></span>
+        <input asp-for="Password" class="form-control">
+    </div>
+    <div class="submit-container">
+        <button type="submit" class="submit-button">Login</button>
+    </div>
+</form>
+<div class="back">
+    <a asp-controller="Home" asp-action="Index" class="submit-button return">Got lost? Let's go home!</a>
+</div>

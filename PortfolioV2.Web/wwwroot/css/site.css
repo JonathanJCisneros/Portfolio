@@ -11,6 +11,7 @@ body {
     font-weight: 300;
     background: linear-gradient(132deg, #41b1fc, #3a50b2, #24309f);
     background-size: 400% 400%;
+    overflow-x: hidden;
     animation: Gradient 10s ease infinite;
     position: relative;
     width: 100%;
@@ -68,6 +69,11 @@ body {
         stroke-dashoffset: 0;
         fill: #ffffff;
     }
+}
+
+.site-wrapper {
+    min-height: 100vh;
+    margin-bottom: -30px;
 }
 
 .animation {
@@ -209,12 +215,12 @@ body {
     text-align: center;
 }
 
-    .work h1 {
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: bold;
-        color: white;
-        font-size: 50px;
-    }
+.section-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: white;
+    font-size: 50px;
+}
 
 .projects {
     display: flex;
@@ -339,15 +345,6 @@ body {
         height: 100%;
     }
 
-.about-title, .contact-title {
-    text-align: center;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    color: white;
-    font-size: 50px;
-    margin-bottom: 30px;
-}
-
 .about-details {
     margin-top: 20px;
     text-align: left;
@@ -356,6 +353,7 @@ body {
 }
 
 .contact {
+    text-align: center;
     height: 800px;
     display: flex;
     align-items: center;
@@ -368,6 +366,11 @@ body {
 
 #inquiry {
     height: 600px;
+}
+
+.error {
+    font-weight: bold;
+    color: red;
 }
 
 .social-buttons {
@@ -392,6 +395,7 @@ body {
     border-radius: 100%;
     background-color: rgba(255, 255, 255, 0.846);
     text-align: center;
+    margin: 25px auto 50px auto;
 }
 
     .social-button img {
@@ -415,7 +419,7 @@ body {
 footer {
     text-align: center;
     color: white;
-    padding: 30px;
+    height: 30px;
 }
 
 @media (max-width: 1024px) {
@@ -460,7 +464,15 @@ footer {
         margin: 25px 0 25px 0;
     }
 
-    .work > h1, .about-title, .contact-title {
+    .contact {
+        height: 750px;
+    }
+
+    .contact > div {
+        height: 650px;
+    }
+
+    .section-title {
         font-size: 35px;
     }
 }
@@ -488,7 +500,7 @@ footer {
         font-size: 18px;
     }
 
-    .work h1, .contact-title, .about-title {
+    .section-title {
         font-size: 30px;
     }
 

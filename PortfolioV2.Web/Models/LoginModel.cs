@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS8618
+#pragma warning disable CS8601
 using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioV2.Web.Models
@@ -19,8 +20,8 @@ namespace PortfolioV2.Web.Models
 
         public static LoginModel Format(LoginModel model)
         {
-            model.Email = model.Email.Trim().ToLower();
-            model.Password = model.Password.Trim();
+            model.Email = model.Email?.Trim().ToLower();
+            model.Password = model.Password?.Trim();
 
             return model;
         }
