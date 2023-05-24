@@ -1,4 +1,5 @@
-﻿using PortfolioV2.Core;
+﻿using MySqlConnector;
+using PortfolioV2.Core;
 using PortfolioV2.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ namespace PortfolioV2.Repository
     {
         private readonly AppDb Db;
 
-        private readonly string email = "jonathan.cisneros@portfolio.com";
-
         public UserRepository(AppDb db) 
         {
             Db = db; 
@@ -26,19 +25,17 @@ namespace PortfolioV2.Repository
 
         public async Task<User?> CheckByEmail(string email)
         {
-            if(email != this.email)
-            {
-                return null;
-            }
+            User user = new();
 
-            User user = new()
+            await using (Db.Connection)
             {
-                Id = Guid.NewGuid(),
-                FirstName = "Jonathan",
-                LastName = "Cisneros",
-                Email = email,
+                await Db.Connection.OpenAsync();
 
+                using var command = new MySqlCommand("", Db.Connection);
             };
+            
+
+            
 
             return user;
         }

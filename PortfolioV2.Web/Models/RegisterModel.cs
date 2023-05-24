@@ -1,4 +1,6 @@
-﻿#pragma warning disable CS8618
+﻿#pragma warning disable CS8601
+#pragma warning disable CS8603
+#pragma warning disable CS8618
 using PortfolioV2.Core;
 using System.ComponentModel.DataAnnotations;
 
@@ -46,12 +48,17 @@ namespace PortfolioV2.Web.Models
 
         [Required(ErrorMessage = "is required")]
         [Display(Name = "Passcode")]
-        public int AdminPass { get; set; }
+        public int AdminPass { get; set; } = 00000;
 
         public static string FormatString(string value)
         {
-            value = value.Trim().ToLower();
-            return char.ToUpper(value[0]) + value[1..];
+            if(value != null)
+            {
+                value = value.Trim().ToLower();
+                value = char.ToUpper((char)(value[0])) + value[1..];
+            }
+            
+            return value;
         }
 
         public static RegisterModel Format(RegisterModel model)
@@ -59,9 +66,9 @@ namespace PortfolioV2.Web.Models
             model.Id = Guid.NewGuid();
             model.FirstName = FormatString(model.FirstName);
             model.LastName = FormatString(model.LastName);
-            model.Email = model.Email.Trim().ToLower();
-            model.Password = model.Password.Trim();
-            model.ConfirmPassword = model.ConfirmPassword.Trim();
+            model.Email = model.Email?.Trim().ToLower();
+            model.Password = model.Password?.Trim();
+            model.ConfirmPassword = model.ConfirmPassword?.Trim();
 
             return model;
         }

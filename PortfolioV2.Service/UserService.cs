@@ -1,4 +1,5 @@
-﻿using PortfolioV2.Core;
+﻿using Microsoft.AspNetCore.Identity;
+using PortfolioV2.Core;
 using PortfolioV2.Repository.Interfaces;
 using PortfolioV2.Service.Interfaces;
 
@@ -29,19 +30,24 @@ namespace PortfolioV2.Service
         {
             User user = await CheckByEmail(email);
 
-            if(user == null)
+            AuthorizeResult result = new();
+            
+            if (user == null)
             {
-                return new AuthorizeResult();
+                return result;
             }
 
+            PasswordHasher<User> hashBrowns = new();
+            PasswordVerificationResult pwCheck = hashBrowns.VerifyHashedPassword(user, password, user.Password);
 
-
-            AuthorizeResult result = new()
+            if (pwCheck == 0)
             {
-                Id = user.Id.ToString(),
-                Name = $"{user.FirstName} {user.LastName}",
-                Email = user.Email
-            };
+                return result;
+            }
+
+            result.Id = user.Id.ToString();
+            result.Name = user.FirstName;
+            result.Email = user.Email;
 
             return result;
         }

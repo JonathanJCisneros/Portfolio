@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS8603
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,8 +45,9 @@ namespace PortfolioV2.Web.Controllers
             await HttpContext.SignInAsync(principle, authenticationProperties);
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string? error = null)
         {
+            ViewBag.Error = error;
 
             return View();
         }
@@ -65,14 +65,13 @@ namespace PortfolioV2.Web.Controllers
             AuthorizeResult status = await _userService.Authorize(model.Email, model.Password);
 
             if(!status.IsAuthorized)
-            {
-                ModelState.AddModelError("Email", "not found");
-                return Login();
+            {                
+                return Login("Your login cridentials are invalid");
             }
 
             await SetAuthCookie(status);
 
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("Dashboard", "Dashboard");
         }
 
         public IActionResult Register()
@@ -109,11 +108,10 @@ namespace PortfolioV2.Web.Controllers
 
             if (saved == null) 
             {
-                ViewBag.Error = "Oops, we could not save your account at this time";
                 return Register();
             }
 
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("Dashboard", "Dashboard");
         }
 
         [Authorize]
@@ -122,11 +120,6 @@ namespace PortfolioV2.Web.Controllers
             await HttpContext.SignOutAsync();
 
             return Login();
-        }
-
-        public async Task<IActionResult> Dashboard()
-        {
-            return View();
-        }
+        }        
     }
 }

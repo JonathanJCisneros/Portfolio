@@ -1,0 +1,91 @@
+﻿.dashboard {
+    padding: 0 20% 0 20%;
+}
+
+.header {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .header > h1 {
+        margin-left: 10px;
+        margin-right: auto;
+        color: white;
+        font-weight: bold;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .header > a {
+        margin-right: 10px;
+        margin-left: auto;
+    }
+
+.no-results {
+    margin: 150px auto;
+    text-align: center;
+}
+
+    .no-results > h2 {
+        color: white;
+        font-weight: bold;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+.table {
+    margin-top: 20px;
+    background-color: lightgray;
+}
+
+.resolved {
+    color: green;
+}
+
+.unresolved {
+    color: red;
+}
+
+.view-one {
+    color: dodgerblue;
+}
+
+@media (max-width: 1400px) {
+    .dashboard {
+        padding: 0 15% 0 15%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .header > h1 {
+        font-size: 27px;
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard {
+        padding: 0 10% 0 10%;
+    }
+}
+
+@media (max-width: 800px) {
+    .header > h1 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .header > h1 {
+        font-size: 22px;
+    }
+
+    .dashboard {
+        padding: 0 5% 0 5%;
+    }
+}
+
+@media (max-width: 500px) {
+    .header > h1 {
+        font-size: 19px;
+    }
+}

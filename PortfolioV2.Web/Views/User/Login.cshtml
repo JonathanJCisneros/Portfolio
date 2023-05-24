@@ -12,6 +12,13 @@
     <h1>Login</h1>
 </div>
 <form asp-controller="User" asp-action="Login" method="POST">
+    @if(ViewBag.Error != null)
+    {
+        <div class="main-error error">
+            @ViewBag.Error
+        </div>
+    }
+    
     <div>
         <label asp-for="Email" class="form-label"></label>
         <span asp-validation-for="Email" class="error"></span>
