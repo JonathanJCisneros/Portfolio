@@ -40,8 +40,8 @@ namespace PortfolioV2.Web.Models
         public static InquiryModel Format(InquiryModel model)
         {
             model.Id = Guid.NewGuid();
-            model.Name = model.Name.Trim();
-            model.Email = model.Email.Trim().ToLower();
+            model.Name = CustomAttributes.FormatFull(model.Name);
+            model.Email = CustomAttributes.FormatString(model.Email);
             model.Details = model.Details.Trim();
 
             return model;

@@ -48,27 +48,16 @@ namespace PortfolioV2.Web.Models
 
         [Required(ErrorMessage = "is required")]
         [Display(Name = "Passcode")]
-        public int AdminPass { get; set; } = 00000;
-
-        public static string FormatString(string value)
-        {
-            if(value != null)
-            {
-                value = value.Trim().ToLower();
-                value = char.ToUpper((char)(value[0])) + value[1..];
-            }
-            
-            return value;
-        }
+        public int AdminPass { get; set; } = 00000;        
 
         public static RegisterModel Format(RegisterModel model)
         {
             model.Id = Guid.NewGuid();
-            model.FirstName = FormatString(model.FirstName);
-            model.LastName = FormatString(model.LastName);
-            model.Email = model.Email?.Trim().ToLower();
-            model.Password = model.Password?.Trim();
-            model.ConfirmPassword = model.ConfirmPassword?.Trim();
+            model.FirstName = CustomAttributes.FormatWord(model.FirstName);
+            model.LastName = CustomAttributes.FormatWord(model.LastName);
+            model.Email = CustomAttributes.FormatString(model.Email);
+            model.Password = !string.IsNullOrEmpty(model.Password) ? model.Password.Trim() : model.Password;
+            model.ConfirmPassword = !string.IsNullOrEmpty(model.ConfirmPassword) ? model.ConfirmPassword.Trim() : model.ConfirmPassword;
 
             return model;
         }

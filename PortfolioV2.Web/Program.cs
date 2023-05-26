@@ -8,8 +8,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddTransient(_ => new AppDb(builder.Configuration.GetConnectionString("Default")));
-
+builder.Services.AddScoped<IMySqlRepository, MySqlRepository>(x => new MySqlRepository(builder.Configuration.GetConnectionString("Database")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
 
@@ -33,10 +32,12 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.MapControllerRoute(
     name: "api",
-    pattern: "{area:exists}/{controller=Inquiry}/{action=Test}/{id?}");
+    pattern: "{area:exists}/{controller}/{action}"
+);
 
 app.Run();

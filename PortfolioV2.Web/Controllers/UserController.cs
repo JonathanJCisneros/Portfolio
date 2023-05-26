@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿#pragma warning disable CS8601
+#pragma warning disable CS8618
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +13,15 @@ namespace PortfolioV2.Web.Controllers
 {
     public class UserController : Controller
     {
+        protected string AuthCode;
         private readonly IUserService _userService;
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<UserController> _logger;      
+        private readonly ILogger<UserController> _logger;     
         
 
         public UserController(IUserService userService, IConfiguration configuration, ILogger<UserController> logger)
         {
+            AuthCode = configuration.GetConnectionString("AdminAuth");
             _userService = userService;
-            _configuration = configuration;
             _logger = logger;
         }
 
@@ -88,7 +90,7 @@ namespace PortfolioV2.Web.Controllers
             {
                 return Register();
             }
-            else if (model.AdminPass.ToString() != _configuration.GetConnectionString("Auth"))
+            else if (model.AdminPass.ToString() != AuthCode)
             {
                 ModelState.AddModelError("AdminPass", "is invalid");
                 return Register();

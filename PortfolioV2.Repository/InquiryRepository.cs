@@ -10,13 +10,6 @@ namespace PortfolioV2.Repository
 {
     public class InquiryRepository : IInquiryRepository
     {
-        private readonly AppDb Db;
-
-        public InquiryRepository(AppDb db)
-        {
-            Db = db;
-        }
-
         public async Task<bool> CheckById(string id)
         {
             throw new NotImplementedException();

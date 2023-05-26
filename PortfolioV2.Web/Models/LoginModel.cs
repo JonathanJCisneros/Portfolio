@@ -20,8 +20,8 @@ namespace PortfolioV2.Web.Models
 
         public static LoginModel Format(LoginModel model)
         {
-            model.Email = model.Email?.Trim().ToLower();
-            model.Password = model.Password?.Trim();
+            model.Email = CustomAttributes.FormatString(model.Email);
+            model.Password = !string.IsNullOrEmpty(model.Password) ? model.Password.Trim() : model.Password;
 
             return model;
         }

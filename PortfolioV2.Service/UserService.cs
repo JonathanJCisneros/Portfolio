@@ -21,9 +21,7 @@ namespace PortfolioV2.Service
 
         public async Task<User> CheckByEmail(string email)
         {
-            User user = await _userRepository.CheckByEmail(email);
-
-            return user;
+            return await _userRepository.CheckByEmail(email);
         }
 
         public async Task<AuthorizeResult> Authorize(string email, string password)
@@ -64,7 +62,12 @@ namespace PortfolioV2.Service
 
         public async Task<string> Create(User user)
         {
-            throw new NotImplementedException();
+            PasswordHasher<User> hashBrowns = new();
+            user.Password = hashBrowns.HashPassword(user, user.Password);
+
+            string id = await _userRepository.Create(user);
+
+            return id;
         }
 
         public async Task<string> Update(User entity)
