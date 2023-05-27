@@ -3,19 +3,23 @@ using PortfolioV2.Repository.Interfaces;
 using PortfolioV2.Repository;
 using PortfolioV2.Service.Interfaces;
 using PortfolioV2.Service;
+using PortfolioV2.Web;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IMySqlRepository, MySqlRepository>(x => new MySqlRepository(builder.Configuration.GetConnectionString("Database")));
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>(x => new UserRepository(builder.Configuration.GetConnectionString("Database")));
+builder.Services.AddScoped<IInquiryRepository, InquiryRepository>(x => new InquiryRepository(builder.Configuration.GetConnectionString("Database")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInquiryService, InquiryService>();
 
-builder.Services.ConfigureApplicationCookie(opts => opts.LoginPath = "/User/Login");
+builder.Services.ConfigureApplicationCookie(opts =>
+{
+    opts.LoginPath = "/User/Login";
+    opts.LogoutPath = "/User/Logout";
+});
 
 WebApplication? app = builder.Build();
 
@@ -29,6 +33,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
@@ -39,5 +44,7 @@ app.MapControllerRoute(
     name: "api",
     pattern: "{area:exists}/{controller}/{action}"
 );
+
+App.IsDeployed = builder.Environment.IsProduction();
 
 app.Run();

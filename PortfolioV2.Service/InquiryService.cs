@@ -10,17 +10,7 @@ namespace PortfolioV2.Service
             throw new NotImplementedException();
         }
 
-        public async Task<string> Create(Inquiry entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> Delete(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Inquiry> Get(string id)
+        public async Task<Inquiry?> Get(string id)
         {
             throw new NotImplementedException();
         }
@@ -30,7 +20,17 @@ namespace PortfolioV2.Service
             throw new NotImplementedException();
         }
 
-        public async Task<string> Update(Inquiry entity)
+        public async Task<string?> Create(Inquiry entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<string?> Update(Inquiry entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> Delete(string id)
         {
             throw new NotImplementedException();
         }

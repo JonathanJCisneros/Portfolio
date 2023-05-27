@@ -2,9 +2,9 @@
 
 namespace PortfolioV2.Service.Interfaces
 {
-    public interface IUserService : IBaseInterface<User>
+    public interface IUserService : IInterface<User>
     {
-        Task<User> CheckByEmail(string email);
+        Task<User?> CheckByEmail(string email);
 
         Task<AuthorizeResult> Authorize(string email, string password);
     }

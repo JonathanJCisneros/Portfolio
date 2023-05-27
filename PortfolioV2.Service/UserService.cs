@@ -19,14 +19,14 @@ namespace PortfolioV2.Service
             throw new NotImplementedException();
         }
 
-        public async Task<User> CheckByEmail(string email)
+        public async Task<User?> CheckByEmail(string email)
         {
             return await _userRepository.CheckByEmail(email);
         }
 
         public async Task<AuthorizeResult> Authorize(string email, string password)
         {
-            User user = await CheckByEmail(email);
+            User? user = await CheckByEmail(email);
 
             AuthorizeResult result = new();
             
@@ -36,7 +36,7 @@ namespace PortfolioV2.Service
             }
 
             PasswordHasher<User> hashBrowns = new();
-            PasswordVerificationResult pwCheck = hashBrowns.VerifyHashedPassword(user, password, user.Password);
+            PasswordVerificationResult pwCheck = hashBrowns.VerifyHashedPassword(user, user.Password, password);
 
             if (pwCheck == 0)
             {
@@ -50,7 +50,7 @@ namespace PortfolioV2.Service
             return result;
         }
 
-        public async Task<User> Get(string id)
+        public async Task<User?> Get(string id)
         {
             throw new NotImplementedException();
         }
@@ -60,17 +60,17 @@ namespace PortfolioV2.Service
             throw new NotImplementedException();
         }
 
-        public async Task<string> Create(User user)
+        public async Task<string?> Create(User user)
         {
             PasswordHasher<User> hashBrowns = new();
             user.Password = hashBrowns.HashPassword(user, user.Password);
 
-            string id = await _userRepository.Create(user);
+            string? id = await _userRepository.Create(user);
 
             return id;
         }
 
-        public async Task<string> Update(User entity)
+        public async Task<string?> Update(User entity)
         {
             throw new NotImplementedException();
         }

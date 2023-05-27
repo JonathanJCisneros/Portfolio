@@ -2,7 +2,7 @@
 
 namespace PortfolioV2.Repository.Interfaces
 {
-    public interface IInquiryRepository : IBaseInterface<Inquiry>
+    public interface IInquiryRepository : IInterface<Inquiry>
     {
         
     }

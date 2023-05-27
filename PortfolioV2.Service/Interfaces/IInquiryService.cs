@@ -2,7 +2,7 @@
 
 namespace PortfolioV2.Service.Interfaces
 {
-    public interface IInquiryService : IBaseInterface<Inquiry>
+    public interface IInquiryService : IInterface<Inquiry>
     {
     }
 }

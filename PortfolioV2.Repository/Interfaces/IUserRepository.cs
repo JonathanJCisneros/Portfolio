@@ -2,8 +2,10 @@
 
 namespace PortfolioV2.Repository.Interfaces
 {
-    public interface IUserRepository : IBaseInterface<User>
+    public interface IUserRepository : IInterface<User>
     {
-        Task<User> CheckByEmail(string email);
+        Task<User?> CheckByEmail(string email);
+
+        Task Login(string id);
     }
 }
