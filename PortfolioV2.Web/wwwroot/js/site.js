@@ -1,6 +1,4 @@
-﻿const { createApp } = Vue;
-
-function setTextAnimation(delay, duration, strokeWidth, timingFunction, strokeColor, repeat) {
+﻿function setTextAnimation(delay, duration, strokeWidth, timingFunction, strokeColor, repeat) {
     let paths = document.querySelectorAll("path");
     let mode = repeat ? 'infinite' : 'forwards'
     for (let i = 0; i < paths.length; i++) {
@@ -27,11 +25,3 @@ $(function () {
         });
     }
 });
-
-const form = createApp({
-
-});
-
-if (document.getElementById('inquiry')) {
-    form.mount('#inquiry');
-}   

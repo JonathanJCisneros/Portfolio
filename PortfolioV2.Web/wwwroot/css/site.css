@@ -5,7 +5,6 @@
     padding: 0px;
 }
 
-
 body {
     font-family: "Signika Negative", sans-serif;
     font-weight: 300;
@@ -354,18 +353,10 @@ body {
 
 .contact {
     text-align: center;
-    height: 800px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.contact > div {
-    height: 700px;
-}
-
-#inquiry {
-    height: 600px;
+    margin-bottom: 15px;
 }
 
 .error {
@@ -462,14 +453,6 @@ footer {
 
     .project {
         margin: 25px 0 25px 0;
-    }
-
-    .contact {
-        height: 750px;
-    }
-
-    .contact > div {
-        height: 650px;
     }
 
     .section-title {

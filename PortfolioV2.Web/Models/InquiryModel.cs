@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS8618
+using PortfolioV2.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioV2.Web.Models
@@ -8,27 +9,23 @@ namespace PortfolioV2.Web.Models
         [Required]
         public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "is requried")]
-        [MinLength(2, ErrorMessage = "must be at least 2 characters long")]
-        [MaxLength(70, ErrorMessage = "is too long")]
-        [Display(Name = "Name")]
+        [Required(ErrorMessage = "Name is required")]
+        [MinLength(2, ErrorMessage = "Name must be at least 2 characters long")]
+        [MaxLength(70, ErrorMessage = "Name is too long")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "is required")]
-        [EmailAddress(ErrorMessage = "must be a valid Email address")]
-        [MaxLength(320, ErrorMessage = "is too long")]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Email must be a valid email address")]
+        [MaxLength(320, ErrorMessage = "Email is too long")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "is required")]
-        [MaxLength(8, ErrorMessage = "is too long")]
-        [Display(Name = "Inquiry Type")]
+        [Required(ErrorMessage = "Type is required")]
+        [MaxLength(8, ErrorMessage = "Type is too long")]
         public string InquiryType { get; set; }
 
-        [Required(ErrorMessage = "is required")]
-        [MinLength(4, ErrorMessage = "details must be at least 4 characters long")]
-        [MaxLength(1000, ErrorMessage = "is too long")]
-        [Display(Name = "Details")]
+        [Required(ErrorMessage = "Details are required")]
+        [MinLength(4, ErrorMessage = "Details must be at least 4 characters long")]
+        [MaxLength(1000, ErrorMessage = "Details are too long")]
         public string Details { get; set; }
 
         public string Status { get; set; } = "Unresolved";
@@ -45,6 +42,21 @@ namespace PortfolioV2.Web.Models
             model.Details = model.Details.Trim();
 
             return model;
+        }
+
+        public static Inquiry ToInquiry(InquiryModel inquiry)
+        {
+            return new Inquiry
+            {
+                Id = Guid.NewGuid(),
+                Name = inquiry.Name,
+                Email = inquiry.Email,
+                InquiryType = inquiry.InquiryType,
+                Details = inquiry.Details,
+                Status = inquiry.Status,
+                CreatedDate = inquiry.CreatedDate,
+                UpdatedDate = inquiry.UpdatedDate
+            };
         }
     }
 }

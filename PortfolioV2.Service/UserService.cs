@@ -16,7 +16,7 @@ namespace PortfolioV2.Service
 
         public async Task<bool> CheckById(string id)
         {
-            throw new NotImplementedException();
+            return await _userRepository.CheckById(id);
         }
 
         public async Task<User?> CheckByEmail(string email)
@@ -47,17 +47,19 @@ namespace PortfolioV2.Service
             result.Name = user.FirstName;
             result.Email = user.Email;
 
+            await _userRepository.Login(user.Id.ToString());
+
             return result;
         }
 
         public async Task<User?> Get(string id)
         {
-            throw new NotImplementedException();
+            return await _userRepository.Get(id);
         }
 
         public async Task<List<User>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _userRepository.GetAll();
         }
 
         public async Task<string?> Create(User user)
@@ -70,15 +72,14 @@ namespace PortfolioV2.Service
             return id;
         }
 
-        public async Task<string?> Update(User entity)
+        public async Task<string?> Update(User user)
         {
-            throw new NotImplementedException();
+            return await _userRepository.Update(user);
         }
 
         public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            return await _userRepository.Delete(id);
         }
-
     }
 }

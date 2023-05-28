@@ -244,7 +244,30 @@
 <div class="contact">
     <div>
         <h1 class="section-title">Contact</h1>
-        @await Html.PartialAsync("_Inquiry")
+        <form id="inquiry" v-cloak>
+            <div class="form-group">
+                <input name="Name" placeholder="Name" v-model="form.name">
+                <span class="error" v-if="errors.hasOwnProperty('Name')">{{errors.Name}}</span>
+            </div>
+            <div class="form-group">
+                <input name="Email" placeholder="Email" v-model="form.email">
+                <span class="error" v-if="errors.hasOwnProperty('Email')">{{errors.Email}}</span>
+            </div>
+            <div class="form-group">
+                <select name="InquiryType" id="InquiryType" v-model="form.inquiryType">
+                    <option disabled value="">Please Select</option>
+                    <option value="Question">Question</option>
+                    <option value="Project">Project</option>
+                    <option value="Hire">Hire</option>
+                </select>
+                <span class="error" v-if="errors.hasOwnProperty('InquiryType')">{{errors.InquiryType}}</span>
+            </div>
+            <div class="form-group">
+                <textarea name="Details" rows="5" cols="35" placeholder="Please type here..." v-model="form.details"></textarea>
+                <span class="error" v-if="errors.hasOwnProperty('Details')">{{errors.Details}}</span>
+            </div>
+            <button type="submit" id="submit-button" v-on:click.prevent="onSubmit">Submit</button>
+        </form>
     </div>
 </div>
 <div class="social-buttons">
@@ -264,4 +287,5 @@
 
 @section Scripts {
     <script type="text/javascript" src="~/js/compressed.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/inquiry.js" asp-append-version="true"></script>
 }
