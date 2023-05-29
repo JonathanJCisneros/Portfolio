@@ -21,7 +21,7 @@ namespace PortfolioV2.Web.Models
 
         [Required(ErrorMessage = "Type is required")]
         [MaxLength(8, ErrorMessage = "Type is too long")]
-        public string InquiryType { get; set; }
+        public string Type { get; set; }
 
         [Required(ErrorMessage = "Details are required")]
         [MinLength(4, ErrorMessage = "Details must be at least 4 characters long")]
@@ -51,7 +51,7 @@ namespace PortfolioV2.Web.Models
                 Id = Guid.NewGuid(),
                 Name = inquiry.Name,
                 Email = inquiry.Email,
-                InquiryType = inquiry.InquiryType,
+                Type = inquiry.Type,
                 Details = inquiry.Details,
                 Status = inquiry.Status,
                 CreatedDate = inquiry.CreatedDate,

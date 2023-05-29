@@ -96,7 +96,7 @@ namespace PortfolioV2.Web.Controllers
                 return Register();
             }
 
-            User dbUser = await _userService.CheckByEmail(model.Email);
+            User? dbUser = await _userService.CheckByEmail(model.Email);
 
             if(dbUser != null)
             {
@@ -106,7 +106,7 @@ namespace PortfolioV2.Web.Controllers
 
             User user = RegisterModel.ToUser(model);
 
-            string saved = await _userService.Create(user);
+            string? saved = await _userService.Create(user);
 
             if (saved == null) 
             {
@@ -116,7 +116,6 @@ namespace PortfolioV2.Web.Controllers
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
-        [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync();

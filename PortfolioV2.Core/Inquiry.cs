@@ -8,7 +8,7 @@ namespace PortfolioV2.Core
 
         public string Email { get; set; }
 
-        public string InquiryType { get; set; }
+        public string Type { get; set; }
 
         public string Details { get; set; }
 
