@@ -1,16 +1,15 @@
 ﻿#pragma warning disable CS8602
-#pragma warning disable CS8619
 using Microsoft.AspNetCore.Mvc;
 using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
 using PortfolioV2.Web.Models;
 
-namespace PortfolioV2.Web.API
+namespace PortfolioV2.Web.Areas
 {
     [Area("api")]
     public class InquiryController : Controller
     {
-        private IInquiryService _inquiryService;
+        private readonly IInquiryService _inquiryService;
 
         public InquiryController(IInquiryService inquiryService)
         {

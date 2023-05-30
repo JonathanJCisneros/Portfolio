@@ -34,6 +34,20 @@ namespace PortfolioV2.Web.Models
 
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
+        public InquiryModel() { }
+
+        public InquiryModel(Inquiry inquiry)
+        {
+            Id = inquiry.Id;
+            Name = inquiry.Name;
+            Email = inquiry.Email;
+            Type = inquiry.Type;
+            Details = inquiry.Details;
+            Status = inquiry.Status;
+            CreatedDate = inquiry.CreatedDate;
+            UpdatedDate = inquiry.UpdatedDate;
+        }
+
         public static InquiryModel Format(InquiryModel model)
         {
             model.Id = Guid.NewGuid();
@@ -48,7 +62,7 @@ namespace PortfolioV2.Web.Models
         {
             return new Inquiry
             {
-                Id = Guid.NewGuid(),
+                Id = inquiry.Id,
                 Name = inquiry.Name,
                 Email = inquiry.Email,
                 Type = inquiry.Type,

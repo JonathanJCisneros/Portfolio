@@ -4,21 +4,16 @@ using System.Diagnostics;
 
 namespace PortfolioV2.Controllers
 {
-    public class HomeController : Controller
+    public class PortfolioController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<PortfolioController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public PortfolioController(ILogger<PortfolioController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
+        public IActionResult Home()
         {
             return View();
         }

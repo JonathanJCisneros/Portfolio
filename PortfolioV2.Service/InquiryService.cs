@@ -26,7 +26,13 @@ namespace PortfolioV2.Service
 
         public async Task<List<Inquiry>> GetAll()
         {
-            return await _inquiryRepository.GetAll();
+            List<Inquiry> inquiries = await _inquiryRepository.GetAll();
+
+            List<Inquiry> newList = inquiries.Where(x => x.Status == "Unresolved").ToList();
+
+            newList.AddRange(inquiries.Where(x => x.Status == "Resolved").OrderBy(x => x.UpdatedDate).ToList());
+
+            return newList;
         }
 
         public async Task<string?> Create(Inquiry inquiry)

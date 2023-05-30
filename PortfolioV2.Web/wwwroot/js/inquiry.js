@@ -14,9 +14,20 @@ const form = createApp({
                 }
             })
                 .then(res => res.json())
-                .catch(err => console.log(err));                ;
+                .catch(err => console.log(err));
 
-            !results.success ? this.errors = results.errors : this.success = "Thank you for your inquiry!";
+            if (!results.success) {
+                this.errors = results.errors;
+            }
+            else {
+                this.success = "Thank you for your inquiry!";
+                this.form = {
+                    name: '',
+                    email: '',
+                    type: '',
+                    details: ''
+                }
+            }
         }
     },
     data() {
@@ -24,7 +35,7 @@ const form = createApp({
             form: {
                 name: '',
                 email: '',
-                inquiryType: '',
+                type: '',
                 details: ''
             },
             errors: {},

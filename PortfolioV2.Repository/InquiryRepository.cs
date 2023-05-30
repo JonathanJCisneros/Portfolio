@@ -59,7 +59,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT * FROM users WHERE Id = @id;", conn);
+                await using MySqlCommand cmd = new("SELECT * FROM inquiries WHERE Id = @id;", conn);
 
                 cmd.Parameters.AddWithValue("@id", id);
 
@@ -98,7 +98,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT * FROM users", conn);
+                await using MySqlCommand cmd = new("SELECT * FROM inquiries ORDER BY CreatedDate DESC;", conn);
 
                 MySqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -160,14 +160,58 @@ namespace PortfolioV2.Repository
             return id;
         }
 
-        public async Task<string?> Update(Inquiry entity)
+        public async Task<string?> Update(Inquiry inquiry)
         {
-            throw new NotImplementedException();
+            string? id = null;
+
+            try
+            {
+                await using MySqlConnection conn = new(connection);
+                await conn.OpenAsync();
+                await using MySqlCommand cmd = new("UPDATE inquiries SET Status = @status, UpdatedDate = @updateddate WHERE Id = @id;", conn);
+
+                cmd.Parameters.AddWithValue("@id", inquiry.Id.ToString());
+                cmd.Parameters.AddWithValue("@status", inquiry.Status);
+                cmd.Parameters.AddWithValue("@updateddate", inquiry.UpdatedDate);
+
+                await cmd.ExecuteNonQueryAsync();
+
+                await conn.CloseAsync();
+
+                id = inquiry.Id.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return id;
         }
 
         public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            bool check = false;
+
+            try
+            {
+                await using MySqlConnection conn = new(connection);
+                await conn.OpenAsync();
+                await using MySqlCommand cmd = new("DELETE FROM inquiries WHERE Id = @id;", conn);
+
+                cmd.Parameters.AddWithValue("@id", id);
+
+                await cmd.ExecuteNonQueryAsync();
+
+                await conn.CloseAsync();
+
+                check = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return check;
         }
     }
 }

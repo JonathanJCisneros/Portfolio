@@ -25,7 +25,7 @@ WebApplication? app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Portfolio/Error");
     app.UseHsts();
 }
 
@@ -37,12 +37,13 @@ app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"
+    pattern: "{controller=Portfolio}/{action=Home}/{id?}"
 );
 
-app.MapControllerRoute(
-    name: "api",
-    pattern: "{area:exists}/{controller}/{action}"
+app.MapAreaControllerRoute(
+    name: "apiRoutes",
+    areaName: "api",
+    pattern: "api/{controller}/{action}/{id?}"
 );
 
 App.IsDeployed = builder.Environment.IsProduction();

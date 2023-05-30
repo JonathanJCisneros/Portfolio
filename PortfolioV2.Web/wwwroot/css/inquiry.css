@@ -109,3 +109,9 @@ textarea::placeholder {
 #submit-button:active {
     letter-spacing: 2px;
 }
+
+.d-block.success {
+    margin-top: 10px;
+    color: green;
+    font-weight: 600;
+}
