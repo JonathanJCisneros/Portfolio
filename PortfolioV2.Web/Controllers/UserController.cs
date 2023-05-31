@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS8601
+#pragma warning disable CS8602
 #pragma warning disable CS8618
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -44,18 +45,24 @@ namespace PortfolioV2.Web.Controllers
                 ExpiresUtc = DateTime.UtcNow.AddDays(3)
             };
 
+            await HttpContext.SignOutAsync();
             await HttpContext.SignInAsync(principle, authenticationProperties);
         }
 
-        public IActionResult Login(string? error = null)
+        public async Task<IActionResult> Login(string? error = null)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard", "Dashboard");
+            }
+
             ViewBag.Error = error;
 
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel model, string? returnUrl)
         {
             model = LoginModel.Format(model);
 
@@ -73,11 +80,21 @@ namespace PortfolioV2.Web.Controllers
 
             await SetAuthCookie(status);
 
+            if(returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
+
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard", "Dashboard");
+            }
+
             return View();
         }
 
@@ -116,11 +133,11 @@ namespace PortfolioV2.Web.Controllers
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
-        public async Task<IActionResult> LogOut()
+        public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
 
-            return Login();
+            return RedirectToAction("Login");
         }        
     }
 }

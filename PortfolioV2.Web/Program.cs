@@ -4,6 +4,7 @@ using PortfolioV2.Repository;
 using PortfolioV2.Service.Interfaces;
 using PortfolioV2.Service;
 using PortfolioV2.Web;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +16,10 @@ builder.Services.AddScoped<IInquiryRepository, InquiryRepository>(x => new Inqui
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInquiryService, InquiryService>();
 
-builder.Services.ConfigureApplicationCookie(opts =>
-{
-    opts.LoginPath = "/User/Login";
-    opts.LogoutPath = "/User/Logout";
-});
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opts => opts.LoginPath = "/User/Login"); 
+
+builder.Services.AddRazorPages();
+builder.Services.AddRouting(opts => opts.LowercaseUrls = true);
 
 WebApplication? app = builder.Build();
 
@@ -32,8 +32,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

@@ -9,7 +9,7 @@
 }
 
 <div class="header">
-    <h1>Welcome @User.Identity.Name</h1>
+    <h1>Welcome, @User.Identity.Name</h1>
     <a asp-controller="User" asp-action="Logout" class="btn btn-danger">Logout</a>
 </div>
 @if(Model.Count > 0)
@@ -42,14 +42,14 @@
                     <td>@inquiry.Type</td>
                     <td>@inquiry.Details</td>
                     <td>
-                        <a asp-controller="User" asp-action="ViewOne" asp-route-id="@inquiry.Id" class="btn btn-outline-primary">View</a>
+                        <a asp-controller="Dashboard" asp-action="ViewOne" asp-route-id="@inquiry.Id" class="btn btn-outline-primary">View</a>
                         @if (inquiry.Status == "Unresolved")
                         {
-                            <a asp-controller="User" asp-action="Resolve" asp-route-id="@inquiry.Id" class="btn btn-outline-success">Resolve</a>
+                            <a asp-controller="Dashboard" asp-action="Resolve" asp-route-id="@inquiry.Id" class="btn btn-outline-success">Resolve</a>
                         }
                         else
                         {
-                            <a asp-controller="User" asp-action="Delete" asp-route-id="@inquiry.Id" class="btn btn-outline-danger">Delete</a>
+                            <a asp-controller="Dashboard" asp-action="Delete" asp-route-id="@inquiry.Id" class="btn btn-outline-danger">Delete</a>
                         }
                     </td>
                 </tr>

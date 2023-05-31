@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /user
+Disallow: /dashboard
+
+Sitemap: https://www.jcisneros.dev/sitemap.xml
