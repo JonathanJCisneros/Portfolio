@@ -3,7 +3,6 @@
 #pragma warning disable CS8618
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
@@ -49,7 +48,7 @@ namespace PortfolioV2.Web.Controllers
             await HttpContext.SignInAsync(principle, authenticationProperties);
         }
 
-        public async Task<IActionResult> Login(string? error = null)
+        public IActionResult Login(string? error = null)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -68,14 +67,14 @@ namespace PortfolioV2.Web.Controllers
 
             if(!ModelState.IsValid)
             {
-                return await Login();
+                return Login();
             }
 
             AuthorizeResult status = await _userService.Authorize(model.Email, model.Password);
 
             if(!status.IsAuthorized)
             {                
-                return await Login("Your login cridentials are invalid");
+                return Login("Your login cridentials are invalid");
             }
 
             await SetAuthCookie(status);
