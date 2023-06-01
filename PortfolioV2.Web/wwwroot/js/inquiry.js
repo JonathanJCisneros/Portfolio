@@ -17,6 +17,12 @@ const form = createApp({
                 .catch(err => console.log(err));
 
             if (!results.success) {
+                if (Object.keys(results.errors).includes('userError')) {
+                    this.success = results.errors.userError;
+                }
+                else if (Object.keys(results.errors).includes('serverError')) {
+                    this.success = results.errors.serverError;
+                }
                 this.errors = results.errors;
             }
             else {

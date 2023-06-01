@@ -10,12 +10,10 @@ namespace PortfolioV2.Web.Controllers
     public class DashboardController : Controller
     {
         private readonly IInquiryService _inquiryService;
-        private readonly ILogger<DashboardController> _logger;
 
         public DashboardController(IInquiryService inquiryService, ILogger<DashboardController> logger)
         {
             _inquiryService = inquiryService;
-            _logger = logger;
         }
 
         [Authorize]
@@ -41,26 +39,38 @@ namespace PortfolioV2.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Resolve(string id)
+        public async Task<IActionResult> Resolve(string id, string redirect)
         {
             bool status = await _inquiryService.Resolve(id);
 
             if(!status)
             {
-                return await ViewOne(id);
+                ViewBag.Error = "We could not update your request, please try again later";
             }
 
-            return RedirectToAction("Dashboard");
+            if (redirect == "ViewOne")
+            {
+                return RedirectToAction(redirect, new { id });
+            }
+
+            return RedirectToAction(redirect);
         }
 
         [Authorize]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string id, string errorRedirect)
         {
             bool status = await _inquiryService.Delete(id);
 
             if(!status)
             {
-                return await ViewOne(id);
+                ViewBag.Error = "We could not update your request, please try again later";
+
+                if (errorRedirect == "ViewOne")
+                {
+                    return RedirectToAction(errorRedirect, new { id });
+                }
+
+                return RedirectToAction(errorRedirect);
             }
 
             return RedirectToAction("Dashboard");
