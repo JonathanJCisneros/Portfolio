@@ -15,42 +15,6 @@ namespace PortfolioV2.Repository
             connection = connectionString;
         }
 
-        public async Task<bool> CheckById(string id)
-        {
-            bool check = false;
-
-            try
-            {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT COUNT(1) AS inquiries FROM inquiries WHERE Id = @id;", conn);
-
-                cmd.Parameters.AddWithValue("@id", id);
-
-                MySqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-                int count = 0;
-
-                while (await reader.ReadAsync())
-                {
-                    count = (int)reader["inquiries"];
-                }
-
-                if (count > 0)
-                {
-                    check = true;
-                }
-
-                await conn.CloseAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return check;
-        }
-
         public  async Task<Inquiry?> Get(string id)
         {
             Inquiry? inquiry = null;
@@ -160,9 +124,9 @@ namespace PortfolioV2.Repository
             return id;
         }
 
-        public async Task<string?> Update(Inquiry inquiry)
+        public async Task<bool> Resolve(string id)
         {
-            string? id = null;
+            bool check = false;
 
             try
             {
@@ -170,22 +134,22 @@ namespace PortfolioV2.Repository
                 await conn.OpenAsync();
                 await using MySqlCommand cmd = new("UPDATE inquiries SET Status = @status, UpdatedDate = @updateddate WHERE Id = @id;", conn);
 
-                cmd.Parameters.AddWithValue("@id", inquiry.Id.ToString());
-                cmd.Parameters.AddWithValue("@status", inquiry.Status);
-                cmd.Parameters.AddWithValue("@updateddate", inquiry.UpdatedDate);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@status", "Resolved");
+                cmd.Parameters.AddWithValue("@updateddate", DateTime.Now);
 
                 await cmd.ExecuteNonQueryAsync();
 
                 await conn.CloseAsync();
 
-                id = inquiry.Id.ToString();
+                check = true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            return id;
+            return check;
         }
 
         public async Task<bool> Delete(string id)

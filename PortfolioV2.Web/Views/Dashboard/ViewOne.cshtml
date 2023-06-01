@@ -1,7 +1,27 @@
 ﻿@model InquiryModel
 
 @{
-    ViewData["Title"] = Model.Details[..10];
+    ViewData["Title"] = $"{Model.Details[..10]}...";
 }
 
-<h1>Working!</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/view-one.css" asp-append-version="true"/>
+}
+
+<div class="header">
+    <h3>Hi @User.Identity.Name, here is an inquiry from @Model.Name</h3>
+    <div class="inquiry-actions">
+        <a asp-controller="Dashboard" asp-action="Dashboard" class="btn btn-secondary">Back</a>
+        @if (Model.Status == "Unresolved")
+        {
+            <a asp-controller="Dashboard" asp-action="Resolve" class="btn btn-primary">Resolve</a>
+        }
+        <a asp-controller="Dashboard" asp-action="Delete" class="btn btn-danger">Delete</a> 
+    </div>
+</div>
+<div>
+    <h4>Status: @Model.Status</h4>
+    <h4>Type: @Model.Type</h4>
+    <p>Email: @Model.Email</p>
+    <p>Details: @Model.Details</p>
+</div>

@@ -14,11 +14,6 @@ namespace PortfolioV2.Service
             _userRepository = userRepository;
         }
 
-        public async Task<bool> CheckById(string id)
-        {
-            return await _userRepository.CheckById(id);
-        }
-
         public async Task<User?> CheckByEmail(string email)
         {
             return await _userRepository.CheckByEmail(email);
@@ -52,29 +47,12 @@ namespace PortfolioV2.Service
             return result;
         }
 
-        public async Task<User?> Get(string id)
-        {
-            return await _userRepository.Get(id);
-        }
-
-        public async Task<List<User>> GetAll()
-        {
-            return await _userRepository.GetAll();
-        }
-
         public async Task<string?> Create(User user)
         {
             PasswordHasher<User> hashBrowns = new();
-            user.Password = hashBrowns.HashPassword(user, user.Password);
+            user.Password = hashBrowns.HashPassword(user, user.Password);            
 
-            string? id = await _userRepository.Create(user);
-
-            return id;
-        }
-
-        public async Task<string?> Update(User user)
-        {
-            return await _userRepository.Update(user);
+            return await _userRepository.Create(user);;
         }
 
         public async Task<bool> Delete(string id)

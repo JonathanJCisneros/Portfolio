@@ -13,12 +13,6 @@ namespace PortfolioV2.Service
             _inquiryRepository = inquiryRepository;
         }
 
-
-        public async Task<bool> CheckById(string id)
-        {
-            return await _inquiryRepository.CheckById(id);
-        }
-
         public async Task<Inquiry?> Get(string id)
         {
             return await _inquiryRepository.Get(id);
@@ -40,9 +34,9 @@ namespace PortfolioV2.Service
             return await _inquiryRepository.Create(inquiry);
         }
 
-        public async Task<string?> Update(Inquiry inquiry)
+        public async Task<bool> Resolve(string id)
         {
-            return await _inquiryRepository.Update(inquiry);
+            return await _inquiryRepository.Resolve(id);
         }
 
         public async Task<bool> Delete(string id)

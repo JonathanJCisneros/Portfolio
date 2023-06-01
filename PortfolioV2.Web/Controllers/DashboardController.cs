@@ -35,19 +35,35 @@ namespace PortfolioV2.Web.Controllers
         {
             InquiryModel inquiry = new(await _inquiryService.Get(id));
 
+            ViewData["SiteClass"] = "inquiry";
+
             return View(inquiry);
         }
 
         [Authorize]
         public async Task<IActionResult> Resolve(string id)
         {
+            bool status = await _inquiryService.Resolve(id);
+
+            if(!status)
+            {
+                return await ViewOne(id);
+            }
+
             return RedirectToAction("Dashboard");
         }
 
         [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
-            return RedirectToAction("Daschboard");
+            bool status = await _inquiryService.Delete(id);
+
+            if(!status)
+            {
+                return await ViewOne(id);
+            }
+
+            return RedirectToAction("Dashboard");
         }
     }
 }

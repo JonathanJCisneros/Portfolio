@@ -68,14 +68,14 @@ namespace PortfolioV2.Web.Controllers
 
             if(!ModelState.IsValid)
             {
-                return Login();
+                return await Login();
             }
 
             AuthorizeResult status = await _userService.Authorize(model.Email, model.Password);
 
             if(!status.IsAuthorized)
             {                
-                return Login("Your login cridentials are invalid");
+                return await Login("Your login cridentials are invalid");
             }
 
             await SetAuthCookie(status);
