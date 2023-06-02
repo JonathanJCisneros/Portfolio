@@ -267,7 +267,7 @@
                 <span class="error" v-if="errors.hasOwnProperty('Details')">{{errors.Details}}</span>
             </div>
             <button type="submit" id="submit-button" v-on:click.prevent="onSubmit">Submit</button>
-            <span class="d-block" :class="errors.hasOwnProperty('userError') || errors.hasOwnProperty('serverError') ? 'error' : 'success'" v-if="success">{{success}}</span>
+            <span class="d-block success" v-if="success">{{success}}</span>
         </form>
     </div>
 </div>
