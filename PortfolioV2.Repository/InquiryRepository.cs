@@ -23,7 +23,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT * FROM inquiries WHERE Id = @id;", conn);
+                await using MySqlCommand cmd = new("SELECT * FROM inquiries WHERE id = @id;", conn);
 
                 cmd.Parameters.AddWithValue("@id", id);
 
@@ -33,14 +33,14 @@ namespace PortfolioV2.Repository
                 {
                     inquiry = new()
                     {
-                        Id = Guid.Parse(reader["Id"].ToString()),
-                        Name = reader["Name"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        Type = reader["Type"].ToString(),
-                        Details = reader["Details"].ToString(),
-                        Status = reader["Status"].ToString(),
-                        CreatedDate = Convert.ToDateTime(reader["CreatedDate"]),
-                        UpdatedDate = Convert.ToDateTime(reader["UpdatedDate"])
+                        Id = Guid.Parse(reader["id"].ToString()),
+                        Name = reader["name"].ToString(),
+                        Email = reader["email"].ToString(),
+                        Type = reader["type"].ToString(),
+                        Details = reader["details"].ToString(),
+                        Status = reader["status"].ToString(),
+                        CreatedDate = Convert.ToDateTime(reader["created_date"]),
+                        UpdatedDate = Convert.ToDateTime(reader["updated_date"])
                     };
                 }
 
@@ -62,7 +62,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT * FROM inquiries ORDER BY CreatedDate DESC;", conn);
+                await using MySqlCommand cmd = new("SELECT * FROM inquiries ORDER BY created_date DESC;", conn);
 
                 MySqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -70,14 +70,14 @@ namespace PortfolioV2.Repository
                 {
                     inquiries.Add(new Inquiry
                     {
-                        Id = Guid.Parse(reader["Id"].ToString()),
-                        Name = reader["Name"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        Type = reader["Type"].ToString(),
-                        Details = reader["Details"].ToString(),
-                        Status = reader["Status"].ToString(),
-                        CreatedDate = Convert.ToDateTime(reader["CreatedDate"]),
-                        UpdatedDate = Convert.ToDateTime(reader["UpdatedDate"])
+                        Id = Guid.Parse(reader["id"].ToString()),
+                        Name = reader["name"].ToString(),
+                        Email = reader["email"].ToString(),
+                        Type = reader["type"].ToString(),
+                        Details = reader["details"].ToString(),
+                        Status = reader["status"].ToString(),
+                        CreatedDate = Convert.ToDateTime(reader["created_date"]),
+                        UpdatedDate = Convert.ToDateTime(reader["updated_date"])
                     });
                 }
 
@@ -99,7 +99,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("INSERT INTO inquiries(Id, Name, Email, Type, Details, Status, CreatedDate, UpdatedDate) VALUES(@id, @name, @email, @type, @details, @status, @createddate, @updateddate);", conn);
+                await using MySqlCommand cmd = new("INSERT INTO inquiries(id, name, email, type, details, status, created_date, updated_date) VALUES(@id, @name, @email, @type, @details, @status, @createddate, @updateddate);", conn);
 
                 cmd.Parameters.AddWithValue("@id", inquiry.Id.ToString());
                 cmd.Parameters.AddWithValue("@name", inquiry.Name);
@@ -132,7 +132,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("UPDATE inquiries SET Status = @status, UpdatedDate = @updateddate WHERE Id = @id;", conn);
+                await using MySqlCommand cmd = new("UPDATE inquiries SET status = @status, updated_date = @updateddate WHERE id = @id;", conn);
 
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.Parameters.AddWithValue("@status", "Resolved");
@@ -160,7 +160,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("DELETE FROM inquiries WHERE Id = @id;", conn);
+                await using MySqlCommand cmd = new("DELETE FROM inquiries WHERE id = @id;", conn);
 
                 cmd.Parameters.AddWithValue("@id", id);
 

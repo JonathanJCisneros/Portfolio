@@ -23,7 +23,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT * FROM users WHERE Email = @email;", conn);
+                await using MySqlCommand cmd = new("SELECT * FROM users WHERE email = @email;", conn);
 
                 cmd.Parameters.AddWithValue("@email", email);
 
@@ -33,11 +33,11 @@ namespace PortfolioV2.Repository
                 {
                     user = new()
                     {
-                        Id = Guid.Parse(reader["Id"].ToString()),
-                        FirstName = reader["FirstName"].ToString(),
-                        LastName = reader["LastName"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        Password = reader["Password"].ToString()
+                        Id = Guid.Parse(reader["id"].ToString()),
+                        FirstName = reader["first_name"].ToString(),
+                        LastName = reader["last_name"].ToString(),
+                        Email = reader["email"].ToString(),
+                        Password = reader["password"].ToString()
                     };
                 }
 
@@ -57,7 +57,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("UPDATE users SET LastLoggedIn = @time", conn);
+                await using MySqlCommand cmd = new("UPDATE users SET last_logged_in = @time", conn);
 
                 cmd.Parameters.AddWithValue("@time", DateTime.Now);
 
@@ -79,7 +79,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("INSERT INTO users(Id, FirstName, LastName, Email, Password, CreatedDate, UpdatedDate, LastLoggedIn) VALUES(@id, @firstname, @lastname, @email, @password, @createddate, @updateddate, @lastloggedin);", conn);
+                await using MySqlCommand cmd = new("INSERT INTO users(id, first_name, last_name, email, password, created_date, updated_date, last_logged_in) VALUES(@id, @firstname, @lastname, @email, @password, @createddate, @updateddate, @lastloggedin);", conn);
 
                 cmd.Parameters.AddWithValue("@id", user.Id.ToString());
                 cmd.Parameters.AddWithValue("@firstname", user.FirstName);
@@ -112,7 +112,7 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("DELETE FROM users WHERE Id = @id;", conn);
+                await using MySqlCommand cmd = new("DELETE FROM users WHERE id = @id;", conn);
 
                 cmd.Parameters.AddWithValue("@id", id);
                                 
