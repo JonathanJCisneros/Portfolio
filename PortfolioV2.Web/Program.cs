@@ -29,6 +29,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithRedirects("/Portfolio/Error");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

@@ -8,12 +8,18 @@
     <link rel="stylesheet" href="~/css/error.css" asp-append-version="true" />
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+<div class="error-container">
+    <div class="error-title">
+        <h1 >ERROR</h1>
+    </div>    
+    <div class="error-image">
+        <img class="img-fluid" src="~/images/Lost-Meme.jpg" alt="I am lost" />
+    </div>
+    <h4 class="error-subheader">Redirecting...</h4>
+    <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
