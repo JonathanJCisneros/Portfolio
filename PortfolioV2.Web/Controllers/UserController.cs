@@ -129,6 +129,13 @@ namespace PortfolioV2.Web.Controllers
                 return Register();
             }
 
+            await SetAuthCookie(new()
+            {
+                Id = user.Id.ToString(),
+                Name = user.FirstName,
+                Email = user.Email
+            });
+
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
