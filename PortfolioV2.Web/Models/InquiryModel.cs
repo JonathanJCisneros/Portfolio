@@ -4,11 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioV2.Web.Models
 {
-    public class InquiryModel
+    public class InquiryModel : BaseModel
     {
-        [Required]
-        public Guid Id { get; set; }
-
         [Required(ErrorMessage = "Name is required")]
         [MinLength(2, ErrorMessage = "Name must be at least 2 characters long")]
         [MaxLength(70, ErrorMessage = "Name is too long")]
@@ -29,10 +26,6 @@ namespace PortfolioV2.Web.Models
         public string Details { get; set; }
 
         public string Status { get; set; } = "Unresolved";
-
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-
-        public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         public InquiryModel() { }
 

@@ -10,10 +10,12 @@ namespace PortfolioV2.Web.Areas
     public class InquiryController : Controller
     {
         private readonly IInquiryService _inquiryService;
+        private readonly IUserService _userService;
 
-        public InquiryController(IInquiryService inquiryService)
+        public InquiryController(IInquiryService inquiryService, IUserService userService)
         {
             _inquiryService = inquiryService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -39,6 +41,13 @@ namespace PortfolioV2.Web.Areas
                 return Json(response);
             }
 
+            if (User.Identity.IsAuthenticated || (await _userService.CheckByEmail(model.Email)) != null)
+            {
+                response.Errors.Add("userError", "You can't sumbit inquiries to your own site");
+
+                return Json(response);
+            }
+
             Inquiry inquiry = InquiryModel.ToInquiry(model);
 
             string? result = await _inquiryService.Create(inquiry);
@@ -46,6 +55,8 @@ namespace PortfolioV2.Web.Areas
             if (result == null)
             {
                 response.Errors.Add("serverError", "Oops, we have encountered a problem");
+
+                return Json(response);
             }
 
             response.Success = true;

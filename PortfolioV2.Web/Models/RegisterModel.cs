@@ -6,11 +6,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioV2.Web.Models
 {
-    public class RegisterModel
+    public class RegisterModel : BaseModel
     {
-        [Required]
-        public required Guid Id { get; set; }
-
         [Required(ErrorMessage = "is required")]
         [MinLength(2, ErrorMessage = "must be at least 2 characters")]
         [MaxLength(35, ErrorMessage = "is too long")]
@@ -42,9 +39,6 @@ namespace PortfolioV2.Web.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
-
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "is required")]
         [Display(Name = "Passcode")]
