@@ -57,9 +57,10 @@ namespace PortfolioV2.Repository
             {
                 await using MySqlConnection conn = new(connection);
                 await conn.OpenAsync();
-                await using MySqlCommand cmd = new("UPDATE users SET last_logged_in = @time", conn);
+                await using MySqlCommand cmd = new("UPDATE users SET last_logged_in = @time WHERE id = @id", conn);
 
                 cmd.Parameters.AddWithValue("@time", DateTime.Now);
+                cmd.Parameters.AddWithValue("@id", id);
 
                 await cmd.ExecuteNonQueryAsync();
 
