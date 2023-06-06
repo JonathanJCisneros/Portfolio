@@ -10,8 +10,9 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IUserRepository, UserRepository>(x => new UserRepository(builder.Configuration.GetConnectionString("Database")));
-builder.Services.AddScoped<IInquiryRepository, InquiryRepository>(x => new InquiryRepository(builder.Configuration.GetConnectionString("Database")));
+builder.Services.AddScoped<IMySqlRepository, MySqlRepository>(x => new MySqlRepository(builder.Configuration.GetConnectionString("Database")));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInquiryService, InquiryService>();

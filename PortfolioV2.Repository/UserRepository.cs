@@ -1,134 +1,89 @@
 ﻿#pragma warning disable CS8601
-#pragma warning disable CS8604
-using MySqlConnector;
 using PortfolioV2.Core;
 using PortfolioV2.Repository.Interfaces;
+using System.Data;
 
 namespace PortfolioV2.Repository
 {
     public class UserRepository : IUserRepository
     {
-        protected string connection;
+        private readonly IMySqlRepository db;
 
-        public UserRepository(string connectionString)
+        public UserRepository(IMySqlRepository mySqlRepository)
         {
-            connection = connectionString;
-        }
+            db = mySqlRepository;
+        }        
 
         public async Task<User?> CheckByEmail(string email)
         {
-            User? user = null;
+            string query = "SELECT * FROM users WHERE email = @email;";
 
-            try
+            Dictionary<string, object> parameters = new()
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT * FROM users WHERE email = @email;", conn);
+                { "@email", email}
+            };
 
-                cmd.Parameters.AddWithValue("@email", email);
+            DataTable dt = await db.ExecuteQuery(query, parameters);
 
-                MySqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-                while (await reader.ReadAsync())
-                {
-                    user = new()
-                    {
-                        Id = Guid.Parse(reader["id"].ToString()),
-                        FirstName = reader["first_name"].ToString(),
-                        LastName = reader["last_name"].ToString(),
-                        Email = reader["email"].ToString(),
-                        Password = reader["password"].ToString()
-                    };
-                }
-
-                await conn.CloseAsync();
-            }
-            catch(Exception ex)
+            return dt.Rows.Count == 0 ? null : new()
             {
-                Console.WriteLine(ex.Message);
-            }
-            
-            return user;
+                Id = dt.Rows[0].Field<Guid>("id"),
+                FirstName = dt.Rows[0].Field<string>("first_name"),
+                LastName = dt.Rows[0].Field<string>("last_name"),
+                Email = dt.Rows[0].Field<string>("email"),
+                Password = dt.Rows[0].Field<string>("password")
+            };
         }
 
         public async Task Login(string id)
         {
-            try
+            string query = "UPDATE users SET last_logged_in = @time WHERE id = @id";
+
+            Dictionary<string, object> parameters = new()
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("UPDATE users SET last_logged_in = @time WHERE id = @id", conn);
-
-                cmd.Parameters.AddWithValue("@time", DateTime.Now);
-                cmd.Parameters.AddWithValue("@id", id);
-
-                await cmd.ExecuteNonQueryAsync();
-
-                await conn.CloseAsync();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+                { "@id", id },
+                { "@time", DateTime.Now }
+            };
+            
+            await db.ExecuteNonQuery(query, parameters);
         }
 
         public async Task<string?> Create(User user)
         {
-            string? id = null;
+            string query = "INSERT INTO users(id, first_name, last_name, email, password, created_date, updated_date, last_logged_in) VALUES(@id, @first_name, @last_name, @email, @password, @created_date, @updated_date, @last_logged_in);";
 
-            try
+            Dictionary<string, object> parameters = new()
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("INSERT INTO users(id, first_name, last_name, email, password, created_date, updated_date, last_logged_in) VALUES(@id, @firstname, @lastname, @email, @password, @createddate, @updateddate, @lastloggedin);", conn);
+                { "@id", user.Id.ToString() },
+                { "@first_name", user.FirstName },
+                { "@last_name", user.LastName },
+                { "@email", user.Email },
+                { "@password", user.Password },
+                { "@created_date", user.CreatedDate },
+                { "@updated_date", user.UpdatedDate },
+                { "@last_logged_in", user.LastLoggedIn }
+            };
 
-                cmd.Parameters.AddWithValue("@id", user.Id.ToString());
-                cmd.Parameters.AddWithValue("@firstname", user.FirstName);
-                cmd.Parameters.AddWithValue("@lastname", user.LastName);
-                cmd.Parameters.AddWithValue("@email", user.Email);
-                cmd.Parameters.AddWithValue("@password", user.Password);
-                cmd.Parameters.AddWithValue("@createddate", user.CreatedDate);
-                cmd.Parameters.AddWithValue("@updateddate", user.UpdatedDate);
-                cmd.Parameters.AddWithValue("@lastloggedin", user.LastLoggedIn);
+            bool check = await db.ExecuteNonQuery(query, parameters);
 
-                await cmd.ExecuteNonQueryAsync();    
-                
-                await conn.CloseAsync();
-
-                id = user.Id.ToString();
-            }
-            catch (Exception ex)
+            if (!check)
             {
-                Console.WriteLine(ex.Message);
+                return null;
             }
 
-            return id;
+            return user.Id.ToString();
         }
 
         public async Task<bool> Delete(string id)
         {
-            bool check = false;
+            string query = "DELETE FROM users WHERE id = @id;";
 
-            try
+            Dictionary<string, object> parameters = new()
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("DELETE FROM users WHERE id = @id;", conn);
+                { "@id", id }
+            };
 
-                cmd.Parameters.AddWithValue("@id", id);
-                                
-                await cmd.ExecuteNonQueryAsync();
-
-                await conn.CloseAsync();
-
-                check = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return check;
+            return await db.ExecuteNonQuery(query, parameters);
         }
     }
 }

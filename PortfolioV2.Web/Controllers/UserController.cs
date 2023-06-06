@@ -89,12 +89,7 @@ namespace PortfolioV2.Web.Controllers
 
         public IActionResult Register()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Dashboard", "Dashboard");
-            }
-
-            return View();
+            return User.Identity.IsAuthenticated ? RedirectToAction("Dashboard", "Dashboard") : View();
         }
 
         [HttpPost]

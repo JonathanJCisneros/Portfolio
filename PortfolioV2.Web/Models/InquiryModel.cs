@@ -31,17 +31,14 @@ namespace PortfolioV2.Web.Models
 
         public InquiryModel(Inquiry inquiry)
         {
-            if (inquiry != null)
-            {
-                Id = inquiry.Id;
-                Name = inquiry.Name;
-                Email = inquiry.Email;
-                Type = inquiry.Type;
-                Details = inquiry.Details;
-                Status = inquiry.Status;
-                CreatedDate = inquiry.CreatedDate;
-                UpdatedDate = inquiry.UpdatedDate;
-            }            
+            Id = inquiry.Id;
+            Name = inquiry.Name;
+            Email = inquiry.Email;
+            Type = inquiry.Type;
+            Details = inquiry.Details;
+            Status = inquiry.Status;
+            CreatedDate = inquiry.CreatedDate;
+            UpdatedDate = inquiry.UpdatedDate;            
         }
 
         public static InquiryModel Format(InquiryModel model)

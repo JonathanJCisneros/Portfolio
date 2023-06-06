@@ -1,181 +1,114 @@
 ﻿#pragma warning disable CS8601
-#pragma warning disable CS8604
-using MySqlConnector;
 using PortfolioV2.Core;
 using PortfolioV2.Repository.Interfaces;
+using System.Data;
 
 namespace PortfolioV2.Repository
 {
     public class InquiryRepository : IInquiryRepository
     {
-        protected string connection;
+        private readonly IMySqlRepository db;
 
-        public InquiryRepository(string connectionString)
+        public InquiryRepository(IMySqlRepository mySqlRepository)
         {
-            connection = connectionString;
+            db = mySqlRepository;
         }
 
         public  async Task<Inquiry?> Get(string id)
         {
-            Inquiry? inquiry = null;
+            string query = "SELECT * FROM inquiries WHERE id = @id;";
 
-            try
+            Dictionary<string, object> parameters = new()
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT * FROM inquiries WHERE id = @id;", conn);
+                { "@id", id }
+            };
 
-                cmd.Parameters.AddWithValue("@id", id);
+            DataTable dt = await db.ExecuteQuery(query, parameters);
 
-                MySqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-                while (await reader.ReadAsync())
-                {
-                    inquiry = new()
-                    {
-                        Id = Guid.Parse(reader["id"].ToString()),
-                        Name = reader["name"].ToString(),
-                        Email = reader["email"].ToString(),
-                        Type = reader["type"].ToString(),
-                        Details = reader["details"].ToString(),
-                        Status = reader["status"].ToString(),
-                        CreatedDate = Convert.ToDateTime(reader["created_date"]),
-                        UpdatedDate = Convert.ToDateTime(reader["updated_date"])
-                    };
-                }
-
-                await conn.CloseAsync();
-            }
-            catch (Exception ex)
+            return dt.Rows.Count == 0 ? null : new()
             {
-                Console.WriteLine(ex.Message);
-            }
-
-            return inquiry;
+                Id = dt.Rows[0].Field<Guid>("id"),
+                Name = dt.Rows[0].Field<string>("name"),
+                Email = dt.Rows[0].Field<string>("email"),
+                Type = dt.Rows[0].Field<string>("type"),
+                Details = dt.Rows[0].Field<string>("details"),
+                Status = dt.Rows[0].Field<string>("status"),
+                CreatedDate = dt.Rows[0].Field<DateTime>("created_date"),
+                UpdatedDate = dt.Rows[0].Field<DateTime>("updated_date")
+            };
         }
 
         public async Task<List<Inquiry>> GetAll()
         {
-            List<Inquiry> inquiries = new();
+            string query = "SELECT * FROM inquiries ORDER BY created_date DESC;";
 
-            try
+            Dictionary<string, object> parameters = new();
+
+            DataTable dt = await db.ExecuteQuery(query, parameters); 
+
+            return dt.AsEnumerable().Select(x => new Inquiry
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("SELECT * FROM inquiries ORDER BY created_date DESC;", conn);
-
-                MySqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-                while (await reader.ReadAsync())
-                {
-                    inquiries.Add(new Inquiry
-                    {
-                        Id = Guid.Parse(reader["id"].ToString()),
-                        Name = reader["name"].ToString(),
-                        Email = reader["email"].ToString(),
-                        Type = reader["type"].ToString(),
-                        Details = reader["details"].ToString(),
-                        Status = reader["status"].ToString(),
-                        CreatedDate = Convert.ToDateTime(reader["created_date"]),
-                        UpdatedDate = Convert.ToDateTime(reader["updated_date"])
-                    });
-                }
-
-                await conn.CloseAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return inquiries;
+                Id = x.Field<Guid>("id"),
+                Name = x.Field<string>("name"),
+                Email = x.Field<string>("email"),
+                Type = x.Field<string>("type"),
+                Details = x.Field<string>("details"),
+                Status = x.Field<string>("status"),
+                CreatedDate = x.Field<DateTime>("created_date"),
+                UpdatedDate = x.Field<DateTime>("updated_date")
+            }).ToList();
         }
 
         public async Task<string?> Create(Inquiry inquiry)
         {
-            string? id = null;
+            string query = "INSERT INTO inquiries(id, name, email, type, details, status, created_date, updated_date) VALUES(@id, @name, @email, @type, @details, @status, @created_date, @updated_date);";
 
-            try
+            Dictionary<string, object> parameters = new()
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("INSERT INTO inquiries(id, name, email, type, details, status, created_date, updated_date) VALUES(@id, @name, @email, @type, @details, @status, @createddate, @updateddate);", conn);
+                { "@id", inquiry.Id.ToString() },
+                { "@name", inquiry.Name },
+                { "@email", inquiry.Email },
+                { "@type", inquiry.Type },
+                { "@details", inquiry.Details },
+                { "@status", inquiry.Status },
+                { "@created_date", inquiry.CreatedDate },
+                { "@updated_date", inquiry.UpdatedDate }
+            };
 
-                cmd.Parameters.AddWithValue("@id", inquiry.Id.ToString());
-                cmd.Parameters.AddWithValue("@name", inquiry.Name);
-                cmd.Parameters.AddWithValue("@email", inquiry.Email);
-                cmd.Parameters.AddWithValue("@type", inquiry.Type);
-                cmd.Parameters.AddWithValue("@details", inquiry.Details);
-                cmd.Parameters.AddWithValue("@status", inquiry.Status);
-                cmd.Parameters.AddWithValue("@createddate", inquiry.CreatedDate);
-                cmd.Parameters.AddWithValue("@updateddate", inquiry.UpdatedDate);
+            bool check = await db.ExecuteNonQuery(query, parameters);
 
-                await cmd.ExecuteNonQueryAsync();
-
-                await conn.CloseAsync();
-
-                id = inquiry.Id.ToString();
-            }
-            catch (Exception ex)
+            if (!check) 
             {
-                Console.WriteLine(ex.Message);
+                return null;
             }
 
-            return id;
+            return inquiry.Id.ToString();
         }
 
         public async Task<bool> Resolve(string id)
         {
-            bool check = false;
+            string query = "UPDATE inquiries SET status = @status, updated_date = @updated_date WHERE id = @id;";
 
-            try
+            Dictionary<string, object> parameters = new()
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("UPDATE inquiries SET status = @status, updated_date = @updateddate WHERE id = @id;", conn);
+                { "@id", id },
+                { "@status", "Resolved" },
+                { "@updated_date", DateTime.Now }
+            };            
 
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.Parameters.AddWithValue("@status", "Resolved");
-                cmd.Parameters.AddWithValue("@updateddate", DateTime.Now);
-
-                await cmd.ExecuteNonQueryAsync();
-
-                await conn.CloseAsync();
-
-                check = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return check;
+            return await db.ExecuteNonQuery(query, parameters);
         }
 
         public async Task<bool> Delete(string id)
         {
-            bool check = false;
+            string query = "DELETE FROM inquiries WHERE id = @id;";
 
-            try
+            Dictionary<string, object> parameters = new()
             {
-                await using MySqlConnection conn = new(connection);
-                await conn.OpenAsync();
-                await using MySqlCommand cmd = new("DELETE FROM inquiries WHERE id = @id;", conn);
+                { "@id", id }
+            }; 
 
-                cmd.Parameters.AddWithValue("@id", id);
-
-                await cmd.ExecuteNonQueryAsync();
-
-                await conn.CloseAsync();
-
-                check = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return check;
+            return await db.ExecuteNonQuery(query, parameters);
         }
     }
 }

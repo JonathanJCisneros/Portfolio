@@ -48,12 +48,7 @@ namespace PortfolioV2.Web.Controllers
                 ViewBag.Error = "We could not update your request, please try again later";
             }
 
-            if (redirect == "ViewOne")
-            {
-                return RedirectToAction(redirect, new { id });
-            }
-
-            return RedirectToAction(redirect);
+            return redirect == "ViewOne" ? RedirectToAction(redirect, new { id }) : (IActionResult)RedirectToAction(redirect);
         }
 
         [Authorize]
@@ -65,12 +60,7 @@ namespace PortfolioV2.Web.Controllers
             {
                 ViewBag.Error = "We could not update your request, please try again later";
 
-                if (errorRedirect == "ViewOne")
-                {
-                    return RedirectToAction(errorRedirect, new { id });
-                }
-
-                return RedirectToAction(errorRedirect);
+                return errorRedirect == "ViewOne" ? RedirectToAction(errorRedirect, new { id }) : (IActionResult)RedirectToAction(errorRedirect);
             }
 
             return RedirectToAction("Dashboard");

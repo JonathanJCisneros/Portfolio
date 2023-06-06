@@ -8,7 +8,7 @@ namespace PortfolioV2.Service.Interfaces
 
         Task<List<Inquiry>> GetAll();
 
-        Task<string?> Create(Inquiry entity);
+        Task<string?> Create(Inquiry inquiry);
 
         Task<bool> Resolve(string id);
 

@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PortfolioV2.Web.Models;
-using System.Diagnostics;
 
 namespace PortfolioV2.Controllers
 {
