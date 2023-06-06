@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS8602
-using MySqlConnector;
+﻿using MySqlConnector;
 using PortfolioV2.Repository.Interfaces;
 using System.Data;
 
