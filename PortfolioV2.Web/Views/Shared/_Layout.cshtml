@@ -5,12 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@ViewData["Title"] - Portfolio</title>
         <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />        
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap@(Minified()).css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/layout@(Minified()).css" asp-append-version="true" />        
         @await RenderSectionAsync("Styles", required: false)
     </head>
     <body>
-        <div class="background"></div>
+        <background></background>
         <div class="@(ViewData["SiteClass"] != null ? ViewData["SiteClass"] : "site-wrapper")">
             @RenderBody()
         </div>        
@@ -19,7 +19,7 @@
         </footer>
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-        @if (App.IsDeployed)
+        @if (IsDeployed)
         {
             <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js" asp-append-version="true"></script>
         }

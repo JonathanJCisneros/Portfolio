@@ -49,6 +49,6 @@ app.MapAreaControllerRoute(
     pattern: "api/{controller}/{action}/{id?}"
 );
 
-App.IsDeployed = builder.Environment.IsProduction();
+App<dynamic>.IsDeployed = builder.Environment.IsProduction();
 
 app.Run();

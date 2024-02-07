@@ -1,0 +1,507 @@
+﻿[v-cloak] {
+  display: none;
+}
+
+.animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+#welcome-sign {
+  height: 420px;
+  width: 900px;
+  margin-bottom: 25px;
+}
+@media screen and (max-width: 1024px) {
+  #welcome-sign {
+    height: 250px;
+    width: 90%;
+  }
+}
+@media screen and (max-width: 400px) {
+  #welcome-sign {
+    height: 200px;
+    margin-bottom: 0;
+  }
+}
+#welcome-sign > svg {
+  height: 100%;
+  width: 95%;
+}
+
+.slogan {
+  text-align: center;
+  width: 100%;
+}
+.slogan h2 {
+  font-size: 40px;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+  animation: fadeInRight 1s ease-in-out;
+}
+@media screen and (max-width: 1024px) {
+  .slogan h2 {
+    font-size: 27px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .slogan h2 {
+    font-size: 19px;
+    margin: 20px;
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-300px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+.typer-section {
+  text-align: center;
+}
+
+.typer {
+  color: white;
+  text-align: center;
+  font-size: 50px;
+  display: inline-block;
+}
+@media screen and (max-width: 1024px) {
+  .typer {
+    font-size: 28px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .typer {
+    font-size: 16px;
+  }
+}
+
+#typed-cursor {
+  opacity: 1;
+  font-size: 60px;
+  color: white;
+  font-weight: 100;
+  -webkit-animation: blink 0.7s infinite;
+  -moz-animation: blink 0.7s infinite;
+  -o-animation: blink 0.7s infinite;
+  animation: blink 0.7s infinite;
+}
+@media screen and (max-width: 1024px) {
+  #typed-cursor {
+    font-size: 28px;
+  }
+}
+@media screen and (max-width: 400px) {
+  #typed-cursor {
+    font-size: 18px;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-ms-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+section.work {
+  padding: 20px;
+  text-align: center;
+}
+section.about {
+  padding-top: 50px;
+  text-align: center;
+}
+@media screen and (max-width: 400px) {
+  section.about {
+    width: 90%;
+    height: 680px;
+    padding-top: 0;
+  }
+}
+section.about > div {
+  height: 400px;
+  width: 745px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media screen and (max-width: 400px) {
+  section.about > div {
+    height: 180px;
+    width: 320px;
+  }
+}
+section.about > div img {
+  width: 100%;
+  height: 100%;
+}
+section.about h2 {
+  margin-top: 20px;
+  text-align: left;
+  color: white;
+  width: 80%;
+}
+@media screen and (max-width: 400px) {
+  section.about h2 {
+    font-size: 20px;
+    width: 95%;
+  }
+}
+section.contact {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 15px;
+  padding-top: 50px;
+}
+section > h3 {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  color: white;
+  font-size: 50px;
+}
+@media screen and (max-width: 580px) {
+  section > h3 {
+    font-size: 35px;
+  }
+}
+@media screen and (max-width: 400px) {
+  section > h3 {
+    font-size: 30px;
+  }
+}
+
+.projects {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 90%;
+  flex-wrap: wrap;
+}
+@media screen and (max-width: 580px) {
+  .projects {
+    width: 100%;
+  }
+}
+.projects > div {
+  width: 420px;
+  background: rgba(255, 255, 255, 0.846);
+  padding: 1em;
+  margin-bottom: 2em;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+  height: 710px;
+  margin: 25px;
+  padding: 20px;
+  transition: box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@media screen and (max-width: 580px) {
+  .projects > div {
+    margin: 25px 0 25px 0;
+  }
+}
+@media screen and (max-width: 400px) {
+  .projects > div {
+    width: 400px;
+    height: 645px;
+  }
+}
+.projects > div:hover {
+  box-shadow: 0px 0px 15px black;
+}
+.projects > div > a {
+  margin: 10px;
+  display: block;
+  width: 90%;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 35px;
+  color: #2e5deb;
+  font-weight: bold;
+  line-height: 25px;
+  border: 2px solid #2e5deb;
+  transition: all 0.25s ease;
+}
+@media screen and (max-width: 400px) {
+  .projects > div > a {
+    width: 100%;
+  }
+}
+.projects > div > a:hover {
+  color: white;
+  background: #2e5deb;
+}
+.projects > div > a:active {
+  letter-spacing: 2px;
+}
+.projects > div > p {
+  margin: 15px auto;
+}
+
+.project-image {
+  width: 90%;
+  height: 240px;
+  border-radius: 5px;
+  border: 1px solid black;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+@media screen and (max-width: 400px) {
+  .project-image {
+    height: 150px;
+  }
+}
+.project-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.icons {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15px;
+}
+@media screen and (max-width: 400px) {
+  .icons {
+    padding: 15px 0;
+  }
+}
+.icons > a {
+  margin: 5px;
+  border-radius: 10px;
+}
+.icons > a:hover {
+  filter: drop-shadow(0 0 0.4rem rgba(0, 0, 0, 0.5));
+}
+.icons > a.mern {
+  margin-top: 5px;
+  filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.5));
+}
+.icons > a.mern:hover {
+  filter: drop-shadow(0 0 0.1rem rgba(0, 0, 0, 0.5));
+}
+.icons > a > img {
+  width: 50px;
+  height: 50px;
+}
+
+#inquiry {
+  background: rgba(255, 255, 255, 0.846);
+  padding: 3em;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 0px 40px -6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: box-shadow 0.3s;
+}
+#inquiry:hover {
+  box-shadow: 0px 0px 15px black;
+}
+#inquiry button {
+  outline: none;
+  background: transparent;
+  height: 40px;
+  text-align: center;
+  width: 130px;
+  border-radius: 40px;
+  border: 2px solid #2e5deb;
+  color: #2e5deb;
+  letter-spacing: 1px;
+  text-shadow: 0;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-top: 15px;
+}
+#inquiry button:hover {
+  color: white;
+  background: #2e5deb;
+}
+#inquiry button:active {
+  letter-spacing: 2px;
+}
+#inquiry span {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+#inquiry span.success {
+  margin-top: 10px;
+  color: green;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+.form-group input {
+  background: transparent;
+  width: 300px;
+  padding: 1em;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+  color: black;
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.form-group input::placeholder {
+  color: black;
+}
+.form-group select {
+  background: transparent;
+  width: 150px;
+  padding: 1em;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+  color: black;
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.form-group textarea {
+  background: transparent;
+  width: 300px;
+  padding: 1em;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+  color: black;
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.form-group textarea::placeholder {
+  color: black;
+}
+
+.social-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: -10px;
+  width: 50%;
+}
+@media screen and (max-width: 1024px) {
+  .social-buttons {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 700px) {
+  .social-buttons {
+    width: 60%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .social-buttons {
+    width: 70%;
+  }
+}
+.social-buttons > a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  width: 70px;
+  height: 70px;
+  text-decoration: none;
+  border-radius: 100%;
+  background-color: rgba(255, 255, 255, 0.846);
+  text-align: center;
+  margin: 25px auto 50px auto;
+}
+@media screen and (max-width: 400px) {
+  .social-buttons > a {
+    height: 40px;
+    width: 40px;
+  }
+}
+.social-buttons > a:hover {
+  box-shadow: 0px 0px 11px black;
+}
+.social-buttons > a > img {
+  height: 60%;
+  width: 60%;
+}
+.social-buttons > a > img:hover {
+  filter: drop-shadow(0 0 0.4rem rgba(0, 0, 0, 0.5));
+}

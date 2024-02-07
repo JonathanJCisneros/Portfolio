@@ -3,7 +3,7 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/error.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/error@(Minified()).css" asp-append-version="true" />
 }
 
 <div class="error-container">
@@ -21,3 +21,7 @@
         <div></div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/error@(Minified()).js" asp-append-version="true"></script>
+}

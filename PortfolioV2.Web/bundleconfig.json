@@ -1,0 +1,26 @@
+[
+  {
+    "outputFileName": "wwwroot/js/compressed.min.js",
+    "inputFiles": [
+      "wwwroot/js/compressed.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/inquiry.min.js",
+    "inputFiles": [
+      "wwwroot/js/inquiry.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/home.min.js",
+    "inputFiles": [
+      "wwwroot/js/home.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/error.min.js",
+    "inputFiles": [
+      "wwwroot/js/error.js"
+    ]
+  }
+]
