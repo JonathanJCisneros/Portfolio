@@ -10,7 +10,6 @@
         @await RenderSectionAsync("Styles", required: false)
     </head>
     <body>
-        <background></background>
         <div class="@(ViewData["SiteClass"] != null ? ViewData["SiteClass"] : "site-wrapper")">
             @RenderBody()
         </div>        

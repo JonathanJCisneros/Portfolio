@@ -15,10 +15,6 @@ body {
   width: 100%;
 }
 
-background {
-  overflow: hidden;
-}
-
 @keyframes Gradient {
   0% {
     background-position: 0% 50%;
