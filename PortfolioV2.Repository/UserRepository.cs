@@ -7,16 +7,62 @@ namespace PortfolioV2.Repository
 {
     public class UserRepository : IUserRepository
     {
+        #region Fields
+
         private readonly IMySqlRepository db;
+
+        #endregion Fields
+
+        #region Constructors
 
         public UserRepository(IMySqlRepository mySqlRepository)
         {
             db = mySqlRepository;
-        }        
+        }
+
+        #endregion Constructors
+
+        #region Private Methods
+
+        private static Dictionary<string, object> BuildParameters(User user)
+        {
+            return new Dictionary<string, object>()
+            {
+                { "@id", user.Id },
+                { "@first_name", user.FirstName },
+                { "@last_name", user.LastName },
+                { "@email", user.Email },
+                { "@password", user.Password },
+                { "@last_logged_in", user.LastLoggedIn },
+                { "@created_date", user.CreatedDate },
+                { "@updated_date", user.UpdatedDate }
+            };
+        }
+
+        private static List<User> ConvertTable(DataTable dt)
+        {
+            return dt.AsEnumerable().Select(x => new User
+            {
+                Id = x.Field<Guid>("id"),
+                FirstName = x.Field<string>("first_name"),
+                LastName = x.Field<string>("last_name"),
+                Email = x.Field<string>("email"),
+                Password = x.Field<string>("password"),
+                LastLoggedIn = x.Field<DateTime>("last_logged_in"),
+                CreatedDate = x.Field<DateTime>("created_date"),
+                UpdatedDate = x.Field<DateTime>("updated_date")
+            }).ToList();
+        }
+
+        #endregion Private Methods
+
+        #region Public Methods
 
         public async Task<User?> CheckByEmail(string email)
         {
-            string query = "SELECT * FROM users WHERE email = @email;";
+            string query = @"SELECT * 
+                             FROM users 
+                             WHERE email = @email;";
 
             Dictionary<string, object> parameters = new()
             {
@@ -25,19 +71,14 @@ namespace PortfolioV2.Repository
 
             DataTable dt = await db.ExecuteQuery(query, parameters);
 
-            return dt.Rows.Count == 0 ? null : new()
-            {
-                Id = dt.Rows[0].Field<Guid>("id"),
-                FirstName = dt.Rows[0].Field<string>("first_name"),
-                LastName = dt.Rows[0].Field<string>("last_name"),
-                Email = dt.Rows[0].Field<string>("email"),
-                Password = dt.Rows[0].Field<string>("password")
-            };
+            return dt.Rows.Count == 0 ? null : ConvertTable(dt)[0];
         }
 
-        public async Task Login(string id)
+        public async Task Login(Guid id)
         {
-            string query = "UPDATE users SET last_logged_in = @time WHERE id = @id";
+            string query = @"UPDATE users 
+                             SET last_logged_in = @time 
+                             WHERE id = @id";
 
             Dictionary<string, object> parameters = new()
             {
@@ -48,35 +89,18 @@ namespace PortfolioV2.Repository
             await db.ExecuteNonQuery(query, parameters);
         }
 
-        public async Task<string?> Create(User user)
+        public async Task<bool> Create(User user)
         {
-            string query = "INSERT INTO users(id, first_name, last_name, email, password, created_date, updated_date, last_logged_in) VALUES(@id, @first_name, @last_name, @email, @password, @created_date, @updated_date, @last_logged_in);";
+            string query = @"INSERT INTO users(id, first_name, last_name, email, password, created_date, updated_date, last_logged_in) 
+                                        VALUES(@id, @first_name, @last_name, @email, @password, @created_date, @updated_date, @last_logged_in);";
 
-            Dictionary<string, object> parameters = new()
-            {
-                { "@id", user.Id.ToString() },
-                { "@first_name", user.FirstName },
-                { "@last_name", user.LastName },
-                { "@email", user.Email },
-                { "@password", user.Password },
-                { "@created_date", user.CreatedDate },
-                { "@updated_date", user.UpdatedDate },
-                { "@last_logged_in", user.LastLoggedIn }
-            };
-
-            bool check = await db.ExecuteNonQuery(query, parameters);
-
-            if (!check)
-            {
-                return null;
-            }
-
-            return user.Id.ToString();
+            return await db.ExecuteNonQuery(query, BuildParameters(user));
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(Guid id)
         {
-            string query = "DELETE FROM users WHERE id = @id;";
+            string query = @"DELETE FROM users 
+                             WHERE id = @id;";
 
             Dictionary<string, object> parameters = new()
             {
@@ -85,5 +109,7 @@ namespace PortfolioV2.Repository
 
             return await db.ExecuteNonQuery(query, parameters);
         }
+
+        #endregion Public Methods
     }
 }

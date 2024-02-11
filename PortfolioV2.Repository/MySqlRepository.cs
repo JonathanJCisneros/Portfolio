@@ -6,12 +6,28 @@ namespace PortfolioV2.Repository
 {
     public class MySqlRepository : IMySqlRepository
     {
+        #region Fields
+
         protected readonly string connection;
+
+        #endregion Fields
+
+        #region Constructors
 
         public MySqlRepository(string connectionString)
         {
             connection = connectionString;
         }
+
+        #endregion Constructors
+
+        #region Private Methods
+
+
+
+        #endregion Private Methods
+
+        #region Public Methods
 
         public async Task<bool> ExecuteNonQuery(string query, Dictionary<string, object> parameters)
         {
@@ -65,6 +81,8 @@ namespace PortfolioV2.Repository
             }
 
             return table;
-        }        
+        }
+
+        #endregion Public Methods
     }
 }

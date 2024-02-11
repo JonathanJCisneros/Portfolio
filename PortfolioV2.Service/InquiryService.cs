@@ -6,14 +6,30 @@ namespace PortfolioV2.Service
 {
     public class InquiryService : IInquiryService
     {
+        #region Fields
+
         private readonly IInquiryRepository _inquiryRepository;
+
+        #endregion Fields
+
+        #region Constructors
 
         public InquiryService(IInquiryRepository inquiryRepository)
         {
             _inquiryRepository = inquiryRepository;
         }
 
-        public async Task<Inquiry?> Get(string id)
+        #endregion Constructors
+
+        #region Private Methods
+
+
+
+        #endregion Private Methods
+
+        #region Public Methods
+
+        public async Task<Inquiry?> Get(Guid id)
         {
             return await _inquiryRepository.Get(id);
         }
@@ -22,26 +38,26 @@ namespace PortfolioV2.Service
         {
             List<Inquiry> inquiries = await _inquiryRepository.GetAll();
 
-            List<Inquiry> newList = inquiries.Where(x => x.Status == "Unresolved").ToList();
-
-            newList.AddRange(inquiries.Where(x => x.Status == "Resolved").OrderBy(x => x.UpdatedDate).ToList());
-
-            return newList;
+            return inquiries.OrderByDescending(x => x.Status)
+                            .ThenBy(x => x.CreatedDate)
+                            .ToList();
         }
 
-        public async Task<string?> Create(Inquiry inquiry)
+        public async Task<bool> Create(Inquiry inquiry)
         {
             return await _inquiryRepository.Create(inquiry);
         }
 
-        public async Task<bool> Resolve(string id)
+        public async Task<bool> Resolve(Guid id)
         {
             return await _inquiryRepository.Resolve(id);
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(Guid id)
         {
             return await _inquiryRepository.Delete(id);
         }
+
+        #endregion Public Methods
     }
 }

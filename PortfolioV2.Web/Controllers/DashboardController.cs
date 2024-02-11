@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS8604
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
@@ -7,63 +6,77 @@ using PortfolioV2.Web.Models;
 
 namespace PortfolioV2.Web.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
+        #region Fields
+
         private readonly IInquiryService _inquiryService;
+
+        #endregion Fields
+
+        #region Constructors
 
         public DashboardController(IInquiryService inquiryService)
         {
             _inquiryService = inquiryService;
         }
 
-        [Authorize]
+        #endregion Constructors
+
+        #region Private Methods
+
+
+
+        #endregion Private Methods
+
+        #region Public Methods/Actions
+
         public async Task<IActionResult> Dashboard()
         {
             List<Inquiry> dbInquiries = await _inquiryService.GetAll();
 
-            List<InquiryModel> inquiries = dbInquiries.Select(x => new InquiryModel(x)).ToList();
-
             ViewData["SiteClass"] = "dashboard";
 
-            return View(inquiries);
+            return View(dbInquiries.Select(x => new InquiryModel(x)).ToList());
         }
 
-        [Authorize]
-        public async Task<IActionResult> ViewOne(string id)
+        public async Task<IActionResult> ViewOne(Guid id)
         {
-            InquiryModel inquiry = new(await _inquiryService.Get(id));
+            Inquiry? inquiry = await _inquiryService.Get(id);
+
+            if (inquiry == null)
+            {
+                return RedirectToAction("Dashboard");
+            }
 
             ViewData["SiteClass"] = "inquiry";
 
-            return View(inquiry);
+            return View(new InquiryModel(inquiry));
         }
 
-        [Authorize]
-        public async Task<IActionResult> Resolve(string id, string redirect)
+        public async Task<IActionResult> Resolve(Guid id, string redirect)
         {
-            bool status = await _inquiryService.Resolve(id);
-
-            if (!status)
+            if (!await _inquiryService.Resolve(id))
             {
-                ViewBag.Error = "We could not update your request, please try again later";
+                TempData["Error"] = "We could not update your request, please try again later";
             }
 
             return redirect == "ViewOne" ? RedirectToAction(redirect, new { id }) : (IActionResult)RedirectToAction(redirect);
         }
 
-        [Authorize]
-        public async Task<IActionResult> Delete(string id, string errorRedirect)
+        public async Task<IActionResult> Delete(Guid id, string errorRedirect)
         {
-            bool status = await _inquiryService.Delete(id);
-
-            if (!status)
+            if (!await _inquiryService.Delete(id))
             {
-                ViewBag.Error = "We could not update your request, please try again later";
+                TempData["Error"] = "We could not update your request, please try again later";
 
                 return errorRedirect == "ViewOne" ? RedirectToAction(errorRedirect, new { id }) : (IActionResult)RedirectToAction(errorRedirect);
             }
 
             return RedirectToAction("Dashboard");
         }
+
+        #endregion Public Methods/Actions
     }
 }

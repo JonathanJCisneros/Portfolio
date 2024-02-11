@@ -1,6 +1,5 @@
 ﻿#pragma warning disable CS8602
 using Microsoft.AspNetCore.Mvc;
-using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
 using PortfolioV2.Web.Models;
 
@@ -9,8 +8,14 @@ namespace PortfolioV2.Web.Areas
     [Area("api")]
     public class InquiryController : Controller
     {
+        #region Fields
+
         private readonly IInquiryService _inquiryService;
         private readonly IUserService _userService;
+
+        #endregion Fields
+
+        #region Constructors
 
         public InquiryController(IInquiryService inquiryService, IUserService userService)
         {
@@ -18,8 +23,18 @@ namespace PortfolioV2.Web.Areas
             _userService = userService;
         }
 
+        #endregion Constructors
+
+        #region Private Methods
+
+
+
+        #endregion Private Methods
+
+        #region Public Methods/Actions
+
         [HttpPost]
-        public async Task<JsonResult> NewInquiry([FromBody] InquiryModel model)
+        public async Task<JsonResult> NewInquiry(InquiryModel model)
         {
             ValidationResponseModel response = new()
             {
@@ -27,7 +42,7 @@ namespace PortfolioV2.Web.Areas
                 Errors = new Dictionary<string, string>()
             };
 
-            model = InquiryModel.Format(model);
+            model = model.Format();
 
             if (!ModelState.IsValid)
             {
@@ -48,11 +63,7 @@ namespace PortfolioV2.Web.Areas
                 return Json(response);
             }
 
-            Inquiry inquiry = InquiryModel.ToInquiry(model);
-
-            string? result = await _inquiryService.Create(inquiry);
-
-            if (result == null)
+            if (!await _inquiryService.Create(model.ToInquiry()))
             {
                 response.Errors.Add("serverError", "Oops, we have encountered a problem");
 
@@ -63,5 +74,7 @@ namespace PortfolioV2.Web.Areas
 
             return Json(response);
         }
+
+        #endregion Public Methods/Actions
     }
 }

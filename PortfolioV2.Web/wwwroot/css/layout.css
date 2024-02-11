@@ -67,6 +67,7 @@ footer {
   text-align: center;
   color: white;
   height: 30px;
+  padding-bottom: 10px;
 }
 
 .error {

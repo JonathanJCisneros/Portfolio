@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS8618
+using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioV2.Core
 {
@@ -8,10 +9,28 @@ namespace PortfolioV2.Core
 
         public string Email { get; set; }
 
-        public string Type { get; set; }
+        public InquiryType Type { get; set; }
 
         public string Details { get; set; }
 
-        public string Status { get; set; }
+        public Status Status { get; set; }
+    }
+
+    public enum InquiryType
+    {
+        [Display(Name = "Question")]
+        Question,
+        [Display(Name = "Project")]
+        Project,
+        [Display(Name = "Hire")]
+        Hire
+    }
+
+    public enum Status
+    {
+        [Display(Name = "Unresolved")]
+        Unresolved,
+        [Display(Name = "Resolved")]
+        Resolved
     }
 }

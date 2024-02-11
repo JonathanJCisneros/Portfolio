@@ -1,5 +1,4 @@
 ﻿#pragma warning disable CS8618
-#pragma warning disable CS8601
 using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioV2.Web.Models
@@ -18,12 +17,12 @@ namespace PortfolioV2.Web.Models
 
         public DateTime LoginDateTime { get; set; } = DateTime.Now;
 
-        public static LoginModel Format(LoginModel model)
+        public LoginModel Format()
         {
-            model.Email = CustomAttributes.FormatString(model.Email);
-            model.Password = !string.IsNullOrEmpty(model.Password) ? model.Password.Trim() : model.Password;
+            Email = Email.FormatString();
+            Password = Password.TrimString();
 
-            return model;
+            return this;
         }
     }
 }

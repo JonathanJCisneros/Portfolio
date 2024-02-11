@@ -16,16 +16,16 @@ namespace PortfolioV2.Web.Models
         [MaxLength(320, ErrorMessage = "Email is too long")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Type is required")]
-        [MaxLength(8, ErrorMessage = "Type is too long")]
-        public string Type { get; set; }
+        [Required(ErrorMessage = "Type of Inquiry is required")]
+        public InquiryType Type { get; set; }
 
         [Required(ErrorMessage = "Details are required")]
         [MinLength(4, ErrorMessage = "Details must be at least 4 characters long")]
         [MaxLength(1000, ErrorMessage = "Details are too long")]
         public string Details { get; set; }
 
-        public string Status { get; set; } = "Unresolved";
+        [Required]
+        public Status Status { get; set; } = Status.Unresolved;
 
         public InquiryModel() { }
 
@@ -39,31 +39,31 @@ namespace PortfolioV2.Web.Models
             Status = inquiry.Status;
             CreatedDate = inquiry.CreatedDate;
             UpdatedDate = inquiry.UpdatedDate;            
-        }
+        }        
 
-        public static InquiryModel Format(InquiryModel model)
-        {
-            model.Id = Guid.NewGuid();
-            model.Name = CustomAttributes.FormatFull(model.Name);
-            model.Email = CustomAttributes.FormatString(model.Email);
-            model.Details = model.Details.Trim();
-
-            return model;
-        }
-
-        public static Inquiry ToInquiry(InquiryModel inquiry)
+        public Inquiry ToInquiry()
         {
             return new Inquiry
             {
-                Id = inquiry.Id,
-                Name = inquiry.Name,
-                Email = inquiry.Email,
-                Type = inquiry.Type,
-                Details = inquiry.Details,
-                Status = inquiry.Status,
-                CreatedDate = inquiry.CreatedDate,
-                UpdatedDate = inquiry.UpdatedDate
+                Id = Id,
+                Name = Name,
+                Email = Email,
+                Type = Type,
+                Details = Details,
+                Status = Status,
+                CreatedDate = CreatedDate,
+                UpdatedDate = UpdatedDate
             };
+        }
+
+        public InquiryModel Format()
+        {
+            Id = Guid.NewGuid();
+            Name = Name.FormatFull();
+            Email = Email.FormatString();
+            Details = Details.TrimString();
+
+            return this;
         }
     }
 }

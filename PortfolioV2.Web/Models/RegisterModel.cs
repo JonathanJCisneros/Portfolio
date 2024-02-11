@@ -1,6 +1,4 @@
-﻿#pragma warning disable CS8601
-#pragma warning disable CS8603
-#pragma warning disable CS8618
+﻿#pragma warning disable CS8618
 using PortfolioV2.Core;
 using System.ComponentModel.DataAnnotations;
 
@@ -42,33 +40,33 @@ namespace PortfolioV2.Web.Models
 
         [Required(ErrorMessage = "is required")]
         [Display(Name = "Passcode")]
-        public int AdminPass { get; set; } = 00000;        
+        public int AdminPass { get; set; } = 00000;      
 
-        public static RegisterModel Format(RegisterModel model)
-        {
-            model.Id = Guid.NewGuid();
-            model.FirstName = CustomAttributes.FormatWord(model.FirstName);
-            model.LastName = CustomAttributes.FormatWord(model.LastName);
-            model.Email = CustomAttributes.FormatString(model.Email);
-            model.Password = !string.IsNullOrEmpty(model.Password) ? model.Password.Trim() : model.Password;
-            model.ConfirmPassword = !string.IsNullOrEmpty(model.ConfirmPassword) ? model.ConfirmPassword.Trim() : model.ConfirmPassword;
-
-            return model;
-        }
-
-        public static User ToUser(RegisterModel model)
+        public User ToUser()
         {
             return new User()
             {
-                Id = model.Id,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                Password = model.Password,
+                Id = Id,
+                FirstName = FirstName,
+                LastName = LastName,
+                Email = Email,
+                Password = Password,
                 LastLoggedIn = DateTime.Now,
-                CreatedDate = model.CreatedDate,
-                UpdatedDate = model.UpdatedDate
+                CreatedDate = CreatedDate,
+                UpdatedDate = UpdatedDate
             };
+        }
+
+        public RegisterModel Format()
+        {
+            Id = Guid.NewGuid();
+            FirstName = FirstName.FormatWord();
+            LastName = LastName.FormatWord();
+            Email = Email.FormatString();
+            Password = Password.TrimString();
+            ConfirmPassword = ConfirmPassword.TrimString();
+
+            return this;
         }
     }
 }

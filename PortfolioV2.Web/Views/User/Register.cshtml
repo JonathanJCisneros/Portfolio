@@ -5,12 +5,12 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/user/register@(Minified()).css" asp-append-version="true" />
 }
 
-<div class="register-title">
+<header>
     <h1>Register</h1>
-</div>
+</header>
 <form asp-controller="User" asp-action="Register" method="POST">
     <div>
         <label asp-for="FirstName" class="form-label"></label>
@@ -40,9 +40,9 @@
     <div>
         <label asp-for="AdminPass" class="form-label"></label>
         <span asp-validation-for="AdminPass" class="error"></span>
-        <input asp-for="AdminPass" class="admin-pass form-control" value="00000">
+        <input asp-for="AdminPass" class="form-control" value="00000">
     </div>
-    <div class="submit-container">
+    <div>
         <button type="submit" class="submit-button">Register</button>
     </div>    
 </form>

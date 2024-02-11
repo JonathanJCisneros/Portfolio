@@ -13,9 +13,9 @@ function setTextAnimation(delay, duration, strokeWidth, timingFunction, strokeCo
     }
 }
 
-setTextAnimation(0.1, 2.7, 4, 'linear', '#ffffff', false);
-
 $(function () {
+    setTextAnimation(0.1, 2.7, 4, 'linear', '#ffffff', false);
+
     if ($('.typer')[0]) {
         $('.typer').typed({
             strings: [
@@ -39,9 +39,7 @@ const form = createApp({
         async onSubmit() {
             if (Object.keys(this.errors).length > 0) this.errors = {};
             if (this.success !== null) this.success = null;
-
             const results = await $.post('/api/inquiry/newinquiry', this.form);
-
             if (!results.success) {
                 if (Object.keys(results.errors).includes('userError')) {
                     this.success = results.errors.userError;

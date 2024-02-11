@@ -1,0 +1,111 @@
+.inquiry {
+    padding: 0 10%;
+    min-height: 93vh;
+}
+
+header {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media screen and (max-width: 930px) {
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
+    > h1 {
+        margin-left: 0;
+        margin-right: auto;
+        color: white;
+        font-weight: bold;
+        font-family: 'Courier New', Courier, monospace;
+
+        @media screen and (max-width: 930px) {
+            margin-left: auto;
+        }
+
+        @media screen and (max-width: 450px) {
+            font-size: 26px;
+        }
+
+        @media screen and (max-width: 430px) {
+            font-size: 22px;
+        }
+    }
+
+    > div {
+        margin-right: 0;
+        margin-left: auto;
+
+        @media screen and (max-width: 930px) {
+            margin-right: auto;
+        }
+    }
+}
+
+.content {
+    margin-top: 30px;
+    text-align: center;
+    background-color: lightgrey;
+    padding: 15px;
+    height: 70vh;
+    border: none;
+    border-left: 1px solid rgba(255,255,255,0.3);
+    border-top: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(5px);
+    box-shadow: 4px 4px 60px rgba(0,0,0,0.2);
+    transition: box-shadow .3s;
+
+    &:hover {
+        box-shadow: 0px 0px 15px black;
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        margin-top: 25px;
+
+        h3 {
+            @media screen and (max-width: 550px) {
+                font-size: 17px;
+            }
+
+            @media screen and (max-width: 500px) {
+                font-size: 15px;
+            }
+        }
+    }
+
+    > h4 {
+        margin-top: 30px;
+
+        @media screen and (max-width: 500px) {
+            font-size: 15px;
+        }
+    }
+
+    > p {
+        margin-top: 30px;
+        font-size: 19px;
+        font-weight: 600;
+
+        @media screen and (max-width: 500px) {
+            font-size: 15px;
+        }
+
+        &:after {
+            content: "\a";
+            white-space: pre;
+        }
+    }
+}
+
+.resolved {
+    color: green;
+}
+
+.unresolved {
+    color: red;
+}

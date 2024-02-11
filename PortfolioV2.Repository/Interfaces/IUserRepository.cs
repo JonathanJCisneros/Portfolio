@@ -6,10 +6,10 @@ namespace PortfolioV2.Repository.Interfaces
     {
         Task<User?> CheckByEmail(string email);
 
-        Task Login(string id);
+        Task Login(Guid id);
 
-        Task<string?> Create(User user);
+        Task<bool> Create(User user);
 
-        Task<bool> Delete(string id);
+        Task<bool> Delete(Guid id);
     }
 }

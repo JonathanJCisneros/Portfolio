@@ -7,12 +7,28 @@ namespace PortfolioV2.Service
 {
     public class UserService : IUserService
     {
+        #region Fields
+
         private readonly IUserRepository _userRepository;
+
+        #endregion Fields
+
+        #region Constructors
 
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
+
+        #endregion Constructors
+
+        #region Private Methods
+
+
+
+        #endregion Private Methods
+
+        #region Public Methods
 
         public async Task<User?> CheckByEmail(string email)
         {
@@ -21,13 +37,11 @@ namespace PortfolioV2.Service
 
         public async Task<AuthorizeResult> Authorize(string email, string password)
         {
-            User? user = await CheckByEmail(email);
-
-            AuthorizeResult result = new();
+            User? user = await CheckByEmail(email);            
             
             if (user == null)
             {
-                return result;
+                return new();
             }
 
             PasswordHasher<User> hashBrowns = new();
@@ -35,29 +49,34 @@ namespace PortfolioV2.Service
 
             if (pwCheck == 0)
             {
-                return result;
+                return new();
             }
 
-            result.Id = user.Id.ToString();
-            result.Name = user.FirstName;
-            result.Email = user.Email;
+            AuthorizeResult result = new()
+            {
+                Id = user.Id.ToString(),
+                Name = user.FirstName,
+                Email = user.Email
+            };            
 
-            await _userRepository.Login(user.Id.ToString());
+            await _userRepository.Login(user.Id);
 
             return result;
         }
 
-        public async Task<string?> Create(User user)
+        public async Task<bool> Create(User user)
         {
             PasswordHasher<User> hashBrowns = new();
             user.Password = hashBrowns.HashPassword(user, user.Password);            
 
-            return await _userRepository.Create(user);;
+            return await _userRepository.Create(user);
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(Guid id)
         {
             return await _userRepository.Delete(id);
         }
+
+        #endregion Public Methods
     }
 }

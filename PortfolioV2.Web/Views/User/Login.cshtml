@@ -5,20 +5,19 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/user/login@(Minified()).css" asp-append-version="true" />
 }
 
-<div class="login-title">
+<header>
     <h1>Login</h1>
-</div>
+</header>
 <form asp-controller="User" asp-action="Login" method="POST">
-    @if(ViewBag.Error != null)
+    @if (TempData["Error"] != null)
     {
         <div class="main-error error">
-            @ViewBag.Error
+            @TempData["Error"]
         </div>
-    }
-    
+    }    
     <div>
         <label asp-for="Email" class="form-label"></label>
         <span asp-validation-for="Email" class="error"></span>
@@ -29,7 +28,7 @@
         <span asp-validation-for="Password" class="error"></span>
         <input asp-for="Password" class="form-control">
     </div>
-    <div class="submit-container">
+    <div>
         <button type="submit" class="submit-button">Login</button>
     </div>
 </form>

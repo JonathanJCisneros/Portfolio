@@ -1,21 +1,21 @@
 ﻿namespace PortfolioV2.Web.Models
 {
-    public class CustomAttributes
+    public static class CustomAttributes
     {
-        public static string FormatWord(string value)
+        public static string FormatWord(this string value)
         {
-            if (!string.IsNullOrEmpty(value))
+            if (!String.IsNullOrEmpty(value))
             {
                 value = value.Trim().ToLower();
-                value = char.ToUpper((char)(value[0])) + value[1..];
+                value = char.ToUpper(value[0]) + value[1..];
             }
 
             return value;
         }
 
-        public static string FormatString(string value)
+        public static string FormatString(this string value)
         {
-            if (!string.IsNullOrEmpty(value))
+            if (!String.IsNullOrEmpty(value))
             {
                 value = value.Trim().ToLower();
             }
@@ -23,9 +23,9 @@
             return value;
         }
 
-        public static string FormatFull(string value)
+        public static string FormatFull(this string value)
         {
-            if (!string.IsNullOrEmpty(value))
+            if (!String.IsNullOrEmpty(value))
             {
                 string[] words = value.Trim().Split(' ');
 
@@ -35,6 +35,16 @@
                 }
 
                 value = string.Join(" ", words);
+            }
+
+            return value;
+        }
+
+        public static string TrimString(this string value)
+        {
+            if (!String.IsNullOrEmpty (value))
+            {
+                value = value.Trim();
             }
 
             return value;

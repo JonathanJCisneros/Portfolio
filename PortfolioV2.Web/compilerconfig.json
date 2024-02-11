@@ -6,5 +6,25 @@
   {
     "outputFile": "wwwroot/css/home.css",
     "inputFile": "wwwroot/css/home.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/error.css",
+    "inputFile": "wwwroot/css/error.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/login.css",
+    "inputFile": "wwwroot/css/login.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/register.css",
+    "inputFile": "wwwroot/css/register.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/dashboard/dashboard.css",
+    "inputFile": "wwwroot/css/dashboard/dashboard.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/dashboard/view-one.css",
+    "inputFile": "wwwroot/css/dashboard/view-one.scss"
   }
 ]

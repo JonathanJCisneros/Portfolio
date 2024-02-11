@@ -13,10 +13,15 @@ namespace PortfolioV2.Web.Controllers
 {
     public class UserController : Controller
     {
+        #region Fields
+
         protected string AuthCode;
         private readonly IUserService _userService;
-        private readonly ILogger<UserController> _logger;     
-        
+        private readonly ILogger<UserController> _logger;
+
+        #endregion Fields
+
+        #region Constructors
 
         public UserController(IUserService userService, IConfiguration configuration, ILogger<UserController> logger)
         {
@@ -24,6 +29,10 @@ namespace PortfolioV2.Web.Controllers
             _userService = userService;
             _logger = logger;
         }
+
+        #endregion Constructors
+
+        #region Private Methods
 
         private async Task SetAuthCookie(AuthorizeResult result)
         {
@@ -48,6 +57,10 @@ namespace PortfolioV2.Web.Controllers
             await HttpContext.SignInAsync(principle, authenticationProperties);
         }
 
+        #endregion Private Methods
+
+        #region Public Methods/Actions
+
         public IActionResult Login(string? error = null)
         {
             if (User.Identity.IsAuthenticated)
@@ -55,7 +68,7 @@ namespace PortfolioV2.Web.Controllers
                 return RedirectToAction("Dashboard", "Dashboard");
             }
 
-            ViewBag.Error = error;
+            TempData["Error"] = error;
 
             return View();
         }
@@ -63,23 +76,23 @@ namespace PortfolioV2.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model, string? returnUrl)
         {
-            model = LoginModel.Format(model);
-
-            if(!ModelState.IsValid)
+            model = model.Format(); 
+            
+            if (!ModelState.IsValid)
             {
                 return Login();
             }
 
             AuthorizeResult status = await _userService.Authorize(model.Email, model.Password);
 
-            if(!status.IsAuthorized)
+            if (!status.IsAuthorized)
             {                
                 return Login("Your login cridentials are invalid");
             }
 
             await SetAuthCookie(status);
 
-            if(returnUrl != null)
+            if (returnUrl != null)
             {
                 return Redirect(returnUrl);
             }
@@ -89,14 +102,19 @@ namespace PortfolioV2.Web.Controllers
 
         public IActionResult Register()
         {
-            return User.Identity.IsAuthenticated ? RedirectToAction("Dashboard", "Dashboard") : View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard", "Dashboard");
+            }
+
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
-            model = RegisterModel.Format(model);
-
+            model = model.Format();
+            
             if (!ModelState.IsValid)
             {
                 return Register();
@@ -109,27 +127,20 @@ namespace PortfolioV2.Web.Controllers
 
             User? dbUser = await _userService.CheckByEmail(model.Email);
 
-            if(dbUser != null)
+            if (dbUser != null)
             {
                 ModelState.AddModelError("Email", "is already in use");
                 return Register();
             }
 
-            User user = RegisterModel.ToUser(model);
+            User user = model.ToUser();
 
-            string? saved = await _userService.Create(user);
-
-            if (saved == null) 
+            if (!await _userService.Create(user)) 
             {
                 return Register();
             }
 
-            await SetAuthCookie(new()
-            {
-                Id = user.Id.ToString(),
-                Name = user.FirstName,
-                Email = user.Email
-            });
+            await SetAuthCookie(new AuthorizeResult(user));
 
             return RedirectToAction("Dashboard", "Dashboard");
         }
@@ -139,6 +150,8 @@ namespace PortfolioV2.Web.Controllers
             await HttpContext.SignOutAsync();
 
             return RedirectToAction("Login");
-        }        
+        }
+
+        #endregion Public Methods/Actions
     }
 }

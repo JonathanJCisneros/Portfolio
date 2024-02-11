@@ -1,17 +1,25 @@
-﻿.login-title {
+header {
     text-align: center;
     height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
 
-    .login-title > h1 {
+    @media screen and (max-width: 600px) {
+        height: 175px;
+    }
+
+    > h1 {
         color: white;
         font-weight: bold;
         font-family: 'Courier New', Courier, monospace;
         font-size: 100px;
+
+        @media screen and (max-width: 600px) {
+            font-size: 75px;
+        }
     }
+}
 
 form {
     margin-top: 40px;
@@ -25,19 +33,57 @@ form {
     box-shadow: 0px 0px 40px -6px rgba(0,0,0,0.2);
     position: relative;
     transition: box-shadow .3s;
-}
 
-    form:hover {
+    @media screen and (max-width: 1500px) {
+        width: 40%;
+    }
+
+    @media screen and (max-width: 1024px) {
+        width: 50%;
+    }
+
+    @media screen and (max-width: 800px) {
+        width: 65%;
+    }
+
+    @media screen and (max-width: 700px) {
+        width: 80%;
+    }
+
+    @media screen and (max-width: 600px) {
+        margin-top: 0;
+        width: 100%;
+    }
+
+    &:hover {
         box-shadow: 0px 0px 15px black;
     }
 
-.main-error {
-    text-align: center;
-    margin-bottom: 7px;
+    div {
+        margin-bottom: 2em;
+
+        &:last-of-type {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+    }
 }
 
 .form-label {
     font-weight: 500;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    width: 100px;
 }
 
 input {
@@ -57,18 +103,8 @@ input {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
-    input::placeholder {
-        color: black;
-    }
-
 .back {
     margin-top: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.submit-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,71 +125,32 @@ input {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.25s ease;
-}
 
-    .submit-button:hover {
+    &:hover {
         color: white;
         background: green;
         border-color: green;
     }
 
-    .submit-button:active {
+    &:active {
         letter-spacing: 2px;
     }
 
-    .submit-button.return {
+    &.return {
         background: rgba(255, 255, 255, 0.846);
         width: 250px;
         text-decoration: none;
         padding: 10px;
         border-color: red;
         color: red;
-    }
 
-        .submit-button.return:hover {
+        &:hover {
             color: white;
             background: red;
         }
 
-        .submit-button.return:active {
+        &:active {
             letter-spacing: 2px;
         }
-
-@media (max-width: 1500px) {
-    form {
-        width: 40%;
-    }
-}
-
-@media (max-width: 1024px) {
-    form {
-        width: 50%;
-    }
-}
-
-@media (max-width: 800px) {
-    form {
-        width: 65%;
-    }
-}
-
-@media (max-width: 700px) {
-    form {
-        width: 80%;
-    }
-}
-
-@media (max-width: 600px) {
-    .login-title  {
-        height: 175px;
-    }
-
-    .login-title > h1 {
-        font-size: 75px;
-    }
-
-    form {
-        margin-top: 0;
-        width: 100%;
     }
 }

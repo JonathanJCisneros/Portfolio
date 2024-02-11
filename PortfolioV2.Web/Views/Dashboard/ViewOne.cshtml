@@ -5,27 +5,27 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/view-one.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/dashboard/view-one@(Minified()).css" asp-append-version="true"/>
 }
 
-<div class="header">
+<header>
     <h1>From @Model.Name</h1>
-    <div class="inquiry-actions">
+    <div>
         <a asp-controller="Dashboard" asp-action="Dashboard" class="btn btn-secondary">Back</a>
 
-        @if (Model.Status == "Unresolved")
+        @if (Model.Status == Status.Unresolved)
         {
             <a asp-controller="Dashboard" asp-action="Resolve" asp-route-id="@Model.Id.ToString()" asp-route-redirect="ViewOne" class="btn btn-primary">Resolve</a>
         }
 
         <a asp-controller="Dashboard" asp-action="Delete" asp-route-id="@Model.Id.ToString()" asp-route-errorRedirect="ViewOne" class="btn btn-danger">Delete</a>
     </div>
-</div>
+</header>
 <div class="content">
-    <div class="content-type">
-        <h3>Status: <span class="@(Model.Status == "Unresolved" ? "unresolved" : "resolved")">@Model.Status</span></h3>
+    <div>
+        <h3>Status: <span class="@(Model.Status == Status.Unresolved ? "unresolved" : "resolved")">@Model.Status</span></h3>
         <h3>Type: @Model.Type</h3>
     </div>
     <h4><a href="mailto:@Model.Email">@Model.Email</a></h4>
-    <p class="content-details">@Model.Details</p>
+    <p>@Model.Details</p>
 </div>

@@ -17,7 +17,7 @@ builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInquiryService, InquiryService>();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opts => opts.LoginPath = "/User/Login"); 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opts => opts.LoginPath = "/user/login"); 
 
 builder.Services.AddRazorPages();
 builder.Services.AddRouting(opts => opts.LowercaseUrls = true);
@@ -26,11 +26,11 @@ WebApplication? app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Portfolio/Error");
+    app.UseExceptionHandler("/error");
     app.UseHsts();
 }
 
-app.UseStatusCodePagesWithRedirects("/Portfolio/Error");
+app.UseStatusCodePagesWithRedirects("/error");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

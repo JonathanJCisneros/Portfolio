@@ -14,8 +14,17 @@ namespace PortfolioV2.Core
         {
             get
             {
-                return Id != null;
+                return Id == null || (Id != null && Guid.Parse(Id) != Guid.Empty);
             }
+        }
+
+        public AuthorizeResult() { }
+
+        public AuthorizeResult(User user)
+        {
+            Id = user.Id.ToString();
+            Name = user.FirstName;
+            Email = user.Email;
         }
     }
 }
