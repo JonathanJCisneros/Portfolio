@@ -74,6 +74,14 @@ footer {
     color: white;
     height: 30px;
     padding-bottom: 10px;
+
+    a {
+        color: white;
+
+        &:hover {
+            color: white;
+        }
+    }
 }
 
 .error {

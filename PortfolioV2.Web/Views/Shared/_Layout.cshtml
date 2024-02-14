@@ -13,8 +13,8 @@
         <div class="@(ViewData["SiteClass"] != null ? ViewData["SiteClass"] : "site-wrapper")">
             @RenderBody()
         </div>        
-        <footer> 
-            <small>&copy; @DateTime.Now.ToString("yyyy"), Jonathan Cisneros. All Rights Reserved</small> 
+        <footer>
+            <small>&copy; @DateTime.Now.ToString("yyyy"), Jonathan Cisneros. <a href="https://github.com/JonathanJCisneros/Portfolio" target="_blank">GitHub Repo</a></small>
         </footer>
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>

@@ -65,6 +65,12 @@ footer {
   height: 30px;
   padding-bottom: 10px;
 }
+footer a {
+  color: white;
+}
+footer a:hover {
+  color: white;
+}
 
 .error {
   font-weight: bold;
