@@ -4,29 +4,47 @@
 
 .animation {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
+    padding: 25px;
     margin-bottom: 25px;
+    overflow: visible;
+
+    @media screen and (max-width: 890px) {
+        margin-bottom: 0;
+    }
+
+    @media screen and (max-width: 550px) {
+        padding: 25px 10px;
+    }
 }
 
 #welcome-sign {
-    height: 420px;
-    width: 900px;
-    margin-bottom: 25px;
+    height: auto;
+    width: 70%; 
+    padding: 10px;
+    overflow: visible;
 
-    @media screen and (max-width: 1024px) {
-        height: 250px;
+    @media screen and (max-width: 707px) {
+        width: 80%;
+    }
+
+    @media screen and (max-width: 620px) {
         width: 90%;
     }
 
-    @media screen and (max-width: 400px) {
-        height: 200px;
-        margin-bottom: 0;
+    @media screen and (max-width: 560px) {
+        margin-bottom: 15px;
+    }
+
+    @media screen and (max-width: 520px) {
+        width: 100%;
     }
 
     > svg {
         height: 100%;
-        width: 95%;
+        width: 100%;
+        overflow: visible;
     }
 }
 
@@ -42,6 +60,10 @@
 
         @media screen and (max-width: 1024px) {
             font-size: 27px;
+        }
+
+        @media screen and (max-width: 475px) {
+            font-size: 24px;
         }
 
         @media screen and (max-width: 400px) {
@@ -74,6 +96,10 @@
 
     @media screen and (max-width: 1024px) {
         font-size: 28px;
+    }
+
+    @media screen and (max-width: 475px) {
+        font-size: 22px;
     }
 
     @media screen and (max-width: 400px) {
@@ -174,16 +200,23 @@ section {
     &.work {
         padding: 20px;
         text-align: center;
+
+        @media screen and (max-width: 425px) {
+            padding: 10px;
+        }
     }
 
     &.about {
         padding-top: 50px;
         text-align: center;
 
+        @media screen and (max-width: 550px) {
+            padding-top: 25px;
+        }
+
         @media screen and (max-width: 400px) {
-            width: 90%;
-            height: 680px;
-            padding-top: 0;
+            width: 95%;
+            height: 570px;
         }
 
         > div {
@@ -193,9 +226,13 @@ section {
             align-items: center;
             justify-content: center;
 
+            @media screen and (max-width: 777px) {
+                width: 90%;
+                height: auto;
+            }
+
             @media screen and (max-width: 400px) {
-                height: 180px;
-                width: 320px;
+                width: 95%;
             }
 
             img {
@@ -210,8 +247,20 @@ section {
             color: white;
             width: 80%;
 
-            @media screen and (max-width: 400px) {
+            @media screen and (max-width: 777px) {
+                font-size: 23px;
+                width: 90%;
+            }
+
+            @media screen and (max-width: 540px) {
                 font-size: 20px;
+            }
+
+            @media screen and (max-width: 440px) {
+                font-size: 18px;
+            }
+
+            @media screen and (max-width: 400px) {
                 width: 95%;
             }
         }
@@ -276,18 +325,35 @@ section {
         }
 
         @media screen and (max-width: 400px) {
-            width: 400px;
-            height: 645px;
+            width: 100%;
+            height: 750px;
         }
 
         &:hover {
             box-shadow: 0px 0px 15px black;
         }
 
+        &.extended {
+            height: 725px;
+            margin-top: 40px;
+
+            @media screen and (max-width: 1100px) {
+                margin-top: 25px;
+            }
+
+            @media screen and (max-width: 464px) {
+                height: 750px;
+            }
+
+            @media screen and (max-width: 400px) {
+                height: 765px;
+            }
+        }
+
         > a {
             margin: 10px;
             display: block;
-            width: 90%;
+            width: 80%;
             padding: 10px;
             text-align: center;
             text-decoration: none;
@@ -298,7 +364,7 @@ section {
             border: 2px solid #2e5deb;
             transition: all 0.25s ease;
 
-            @media screen and (max-width: 400px) {
+            @media screen and (max-width: 500px) {
                 width: 100%;
             }
 
@@ -310,6 +376,17 @@ section {
             &:active {
                 letter-spacing: 2px;
             }
+
+            &.disabled {
+                color: white;
+                background: gray;
+                border-color: gray;
+                pointer-events: none;
+
+                span {
+                    text-decoration-line: line-through;
+                }
+            }
         }
 
         > p {
@@ -320,11 +397,16 @@ section {
 
 .project-image {
     width: 90%;
-    height: 240px;
+    height: 200px;
+    min-height: 200px;
     border-radius: 5px;
     border: 1px solid black;
     overflow: hidden;
     margin-bottom: 10px;
+
+    @media screen and (max-width: 460px) {
+        width: 95%;
+    }
 
     @media screen and (max-width: 400px) {
         height: 150px;
@@ -340,8 +422,11 @@ section {
     display: flex;
     flex-wrap: wrap;
     padding: 15px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 447px) {
         padding: 15px 0;
     }
 

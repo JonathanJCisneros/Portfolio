@@ -6,29 +6,51 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 25px;
   margin-bottom: 25px;
+  overflow: visible;
+}
+@media screen and (max-width: 890px) {
+  .animation {
+    margin-bottom: 0;
+  }
+}
+@media screen and (max-width: 550px) {
+  .animation {
+    padding: 25px 10px;
+  }
 }
 
 #welcome-sign {
-  height: 420px;
-  width: 900px;
-  margin-bottom: 25px;
+  height: auto;
+  width: 70%;
+  padding: 10px;
+  overflow: visible;
 }
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 707px) {
   #welcome-sign {
-    height: 250px;
+    width: 80%;
+  }
+}
+@media screen and (max-width: 620px) {
+  #welcome-sign {
     width: 90%;
   }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 560px) {
   #welcome-sign {
-    height: 200px;
-    margin-bottom: 0;
+    margin-bottom: 15px;
+  }
+}
+@media screen and (max-width: 520px) {
+  #welcome-sign {
+    width: 100%;
   }
 }
 #welcome-sign > svg {
   height: 100%;
-  width: 95%;
+  width: 100%;
+  overflow: visible;
 }
 
 .slogan {
@@ -44,6 +66,11 @@
 @media screen and (max-width: 1024px) {
   .slogan h2 {
     font-size: 27px;
+  }
+}
+@media screen and (max-width: 475px) {
+  .slogan h2 {
+    font-size: 24px;
   }
 }
 @media screen and (max-width: 400px) {
@@ -75,6 +102,11 @@
 @media screen and (max-width: 1024px) {
   .typer {
     font-size: 28px;
+  }
+}
+@media screen and (max-width: 475px) {
+  .typer {
+    font-size: 22px;
   }
 }
 @media screen and (max-width: 400px) {
@@ -163,15 +195,24 @@ section.work {
   padding: 20px;
   text-align: center;
 }
+@media screen and (max-width: 425px) {
+  section.work {
+    padding: 10px;
+  }
+}
 section.about {
   padding-top: 50px;
   text-align: center;
 }
+@media screen and (max-width: 550px) {
+  section.about {
+    padding-top: 25px;
+  }
+}
 @media screen and (max-width: 400px) {
   section.about {
-    width: 90%;
-    height: 680px;
-    padding-top: 0;
+    width: 95%;
+    height: 570px;
   }
 }
 section.about > div {
@@ -181,10 +222,15 @@ section.about > div {
   align-items: center;
   justify-content: center;
 }
+@media screen and (max-width: 777px) {
+  section.about > div {
+    width: 90%;
+    height: auto;
+  }
+}
 @media screen and (max-width: 400px) {
   section.about > div {
-    height: 180px;
-    width: 320px;
+    width: 95%;
   }
 }
 section.about > div img {
@@ -197,9 +243,24 @@ section.about h2 {
   color: white;
   width: 80%;
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 777px) {
+  section.about h2 {
+    font-size: 23px;
+    width: 90%;
+  }
+}
+@media screen and (max-width: 540px) {
   section.about h2 {
     font-size: 20px;
+  }
+}
+@media screen and (max-width: 440px) {
+  section.about h2 {
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 400px) {
+  section.about h2 {
     width: 95%;
   }
 }
@@ -265,17 +326,36 @@ section > h3 {
 }
 @media screen and (max-width: 400px) {
   .projects > div {
-    width: 400px;
-    height: 645px;
+    width: 100%;
+    height: 750px;
   }
 }
 .projects > div:hover {
   box-shadow: 0px 0px 15px black;
 }
+.projects > div.extended {
+  height: 725px;
+  margin-top: 40px;
+}
+@media screen and (max-width: 1100px) {
+  .projects > div.extended {
+    margin-top: 25px;
+  }
+}
+@media screen and (max-width: 464px) {
+  .projects > div.extended {
+    height: 750px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .projects > div.extended {
+    height: 765px;
+  }
+}
 .projects > div > a {
   margin: 10px;
   display: block;
-  width: 90%;
+  width: 80%;
   padding: 10px;
   text-align: center;
   text-decoration: none;
@@ -286,7 +366,7 @@ section > h3 {
   border: 2px solid #2e5deb;
   transition: all 0.25s ease;
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   .projects > div > a {
     width: 100%;
   }
@@ -298,17 +378,32 @@ section > h3 {
 .projects > div > a:active {
   letter-spacing: 2px;
 }
+.projects > div > a.disabled {
+  color: white;
+  background: gray;
+  border-color: gray;
+  pointer-events: none;
+}
+.projects > div > a.disabled span {
+  text-decoration-line: line-through;
+}
 .projects > div > p {
   margin: 15px auto;
 }
 
 .project-image {
   width: 90%;
-  height: 240px;
+  height: 200px;
+  min-height: 200px;
   border-radius: 5px;
   border: 1px solid black;
   overflow: hidden;
   margin-bottom: 10px;
+}
+@media screen and (max-width: 460px) {
+  .project-image {
+    width: 95%;
+  }
 }
 @media screen and (max-width: 400px) {
   .project-image {
@@ -324,8 +419,11 @@ section > h3 {
   display: flex;
   flex-wrap: wrap;
   padding: 15px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 447px) {
   .icons {
     padding: 15px 0;
   }
