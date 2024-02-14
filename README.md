@@ -1,3 +1,3 @@
 # Portfolio Version 2
 
-Currently rebuilding my portfolio website using the skills I now have, one year later since I started coding.
+Rebuilt my portfolio website using the skills I have accumulated one year after my first day as a professional Full Stack Developer
