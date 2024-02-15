@@ -16,6 +16,7 @@ namespace PortfolioV2.Web.Controllers
         #region Fields
 
         protected string AuthCode;
+        protected string RegistrationIP;
         private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
 
@@ -26,6 +27,7 @@ namespace PortfolioV2.Web.Controllers
         public UserController(IUserService userService, IConfiguration configuration, ILogger<UserController> logger)
         {
             AuthCode = configuration.GetConnectionString("AdminAuth");
+            RegistrationIP = configuration.GetConnectionString("RegistrationIP");
             _userService = userService;
             _logger = logger;
         }
@@ -55,6 +57,39 @@ namespace PortfolioV2.Web.Controllers
 
             await HttpContext.SignOutAsync();
             await HttpContext.SignInAsync(principle, authenticationProperties);
+        }
+
+        private async Task<bool> IsValidIP()
+        {
+            bool isValid;
+
+            try
+            {
+                HttpClient client = new();
+
+                HttpResponseMessage response = await client.GetAsync("https://wtfismyip.com/text");                
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = (await response.Content.ReadAsStringAsync()).Replace("\n", "");
+
+                    isValid = responseBody == RegistrationIP;
+                }
+                else
+                {
+                    isValid = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO: Add Cloud Watch Logging
+
+                Console.WriteLine(ex.Message.ToString());
+
+                isValid = false;
+            }  
+            
+            return isValid;
         }
 
         #endregion Private Methods
@@ -100,11 +135,15 @@ namespace PortfolioV2.Web.Controllers
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Dashboard", "Dashboard");
+            }
+            else if (!await IsValidIP())
+            {
+                return RedirectToAction("Error", "Portfolio");
             }
 
             return View();
@@ -117,12 +156,13 @@ namespace PortfolioV2.Web.Controllers
             
             if (!ModelState.IsValid)
             {
-                return Register();
+                return await Register();
             }
             else if (model.AdminPass.ToString() != AuthCode)
             {
                 ModelState.AddModelError("AdminPass", "is invalid");
-                return Register();
+
+                return await Register();
             }
 
             User? dbUser = await _userService.CheckByEmail(model.Email);
@@ -130,14 +170,15 @@ namespace PortfolioV2.Web.Controllers
             if (dbUser != null)
             {
                 ModelState.AddModelError("Email", "is already in use");
-                return Register();
+
+                return await Register();
             }
 
             User user = model.ToUser();
 
             if (!await _userService.Create(user)) 
             {
-                return Register();
+                return await Register();
             }
 
             await SetAuthCookie(new AuthorizeResult(user));
