@@ -26,5 +26,9 @@
   {
     "outputFile": "wwwroot/css/dashboard/view-one.css",
     "inputFile": "wwwroot/css/dashboard/view-one.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/user/register.css",
+    "inputFile": "wwwroot/css/user/register.scss"
   }
 ]

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
 using PortfolioV2.Web.Models;
+using System.Net;
 using System.Security.Claims;
 
 namespace PortfolioV2.Web.Controllers
@@ -27,7 +28,7 @@ namespace PortfolioV2.Web.Controllers
         public UserController(IUserService userService, IConfiguration configuration, ILogger<UserController> logger)
         {
             AuthCode = configuration.GetConnectionString("AdminAuth");
-            RegistrationIP = configuration.GetConnectionString("RegistrationIP");
+            RegistrationIP = configuration.GetConnectionString(App.IsDeployed ? "ProductionRegistrationIP" : "LocalRegistrationIP");
             _userService = userService;
             _logger = logger;
         }
@@ -59,37 +60,31 @@ namespace PortfolioV2.Web.Controllers
             await HttpContext.SignInAsync(principle, authenticationProperties);
         }
 
-        private async Task<bool> IsValidIP()
+        private bool IsValidIP()
         {
-            bool isValid;
+            string? ipAddress = Request.Headers["X_FORWARDED_FOR"];
 
-            try
+            ipAddress ??= Request.Headers["HTTP_X_FORWARDED_FOR"];
+
+            ipAddress ??= HttpContext.Request.Headers["REMOTE_ADDR"];
+
+            if (String.IsNullOrEmpty(ipAddress))
             {
-                HttpClient client = new();
+                string hostName = Dns.GetHostName();
 
-                HttpResponseMessage response = await client.GetAsync("https://wtfismyip.com/text");                
+                IPHostEntry ipHostEntries = Dns.GetHostEntry(hostName);
 
-                if (response.IsSuccessStatusCode)
+                IPAddress[] ipAddresses = ipHostEntries.AddressList;
+
+                if (ipAddresses == null || ipAddresses.Length == 0)
                 {
-                    string responseBody = (await response.Content.ReadAsStringAsync()).Replace("\n", "");
+                    ipAddresses = Dns.GetHostAddresses(hostName);
+                }
 
-                    isValid = responseBody == RegistrationIP;
-                }
-                else
-                {
-                    isValid = false;
-                }
+                return ipAddresses.Any(x => x.ToString() == RegistrationIP);
             }
-            catch (Exception ex)
-            {
-                //TODO: Add Cloud Watch Logging
 
-                Console.WriteLine(ex.Message.ToString());
-
-                isValid = false;
-            }  
-            
-            return isValid;
+            return ipAddress == RegistrationIP;
         }
 
         #endregion Private Methods
@@ -135,13 +130,13 @@ namespace PortfolioV2.Web.Controllers
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Dashboard", "Dashboard");
             }
-            else if (!await IsValidIP())
+            else if (!IsValidIP())
             {
                 return RedirectToAction("Error", "Portfolio");
             }
@@ -156,13 +151,13 @@ namespace PortfolioV2.Web.Controllers
             
             if (!ModelState.IsValid)
             {
-                return await Register();
+                return Register();
             }
             else if (model.AdminPass.ToString() != AuthCode)
             {
                 ModelState.AddModelError("AdminPass", "is invalid");
 
-                return await Register();
+                return Register();
             }
 
             User? dbUser = await _userService.CheckByEmail(model.Email);
@@ -171,14 +166,14 @@ namespace PortfolioV2.Web.Controllers
             {
                 ModelState.AddModelError("Email", "is already in use");
 
-                return await Register();
+                return Register();
             }
 
             User user = model.ToUser();
 
             if (!await _userService.Create(user)) 
             {
-                return await Register();
+                return Register();
             }
 
             await SetAuthCookie(new AuthorizeResult(user));
