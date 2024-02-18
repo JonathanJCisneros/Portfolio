@@ -32,15 +32,15 @@ namespace PortfolioV2.Web.Controllers
 
         #region Public Methods/Actions
 
-        public async Task<IActionResult> Dashboard()
+        [Route("/dashboard")]
+        public IActionResult Dashboard()
         {
-            List<Inquiry> dbInquiries = await _inquiryService.GetAll();
-
             ViewData["SiteClass"] = "dashboard";
 
-            return View(dbInquiries.Select(x => new InquiryModel(x)).ToList());
+            return View();
         }
 
+        [Route("/dashboard/{id}")]
         public async Task<IActionResult> ViewOne(Guid id)
         {
             Inquiry? inquiry = await _inquiryService.Get(id);
@@ -55,6 +55,7 @@ namespace PortfolioV2.Web.Controllers
             return View(new InquiryModel(inquiry));
         }
 
+        [Route("/dashboard/resolve/{id}/{redirect}")]
         public async Task<IActionResult> Resolve(Guid id, string redirect)
         {
             if (!await _inquiryService.Resolve(id))
@@ -65,6 +66,7 @@ namespace PortfolioV2.Web.Controllers
             return redirect == "ViewOne" ? RedirectToAction(redirect, new { id }) : (IActionResult)RedirectToAction(redirect);
         }
 
+        [Route("/dashboard/delete/{id}/{errorRedirect}")]
         public async Task<IActionResult> Delete(Guid id, string errorRedirect)
         {
             if (!await _inquiryService.Delete(id))

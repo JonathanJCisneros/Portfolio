@@ -1,6 +1,8 @@
 ﻿#pragma warning disable CS8602
 using Microsoft.AspNetCore.Mvc;
+using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
+using PortfolioV2.Web.Areas.Models;
 using PortfolioV2.Web.Models;
 
 namespace PortfolioV2.Web.Areas
@@ -27,7 +29,10 @@ namespace PortfolioV2.Web.Areas
 
         #region Private Methods
 
-
+        private static string TechnicalError(string message)
+        {
+            return $"Oops, we are having technical issues {message}, please try again later";
+        }
 
         #endregion Private Methods
 
@@ -38,7 +43,6 @@ namespace PortfolioV2.Web.Areas
         {
             ValidationResponseModel response = new()
             {
-                Success = false,
                 Errors = new Dictionary<string, string>()
             };
 
@@ -53,6 +57,11 @@ namespace PortfolioV2.Web.Areas
                         kvp => kvp.Value.Errors[0].ErrorMessage.ToString()
                     );
 
+                if (response.Errors.ContainsKey("Type"))
+                {
+                    response.Errors["Type"] = "Inquiry type is required";
+                }
+
                 return Json(response);
             }
 
@@ -65,12 +74,47 @@ namespace PortfolioV2.Web.Areas
 
             if (!await _inquiryService.Create(model.ToInquiry()))
             {
-                response.Errors.Add("serverError", "Oops, we have encountered a problem");
+                response.Errors.Add("serverError", TechnicalError("submitting your inquiry"));
 
                 return Json(response);
             }
 
-            response.Success = true;
+            return Json(response);
+        }
+
+        public async Task<JsonResult> GetInquiries()
+        {
+            List<Inquiry> inquiries = await _inquiryService.GetAll();
+
+            return Json(inquiries.Select(x => new InquiryModel(x)).ToList());
+        }
+
+        public async Task<JsonResult> Resolve(Guid id)
+        {
+            ValidationResponseModel response = new()
+            {
+                Errors = new Dictionary<string, string>()
+            };
+
+            if (!await _inquiryService.Resolve(id))
+            {
+                response.Errors.Add("serverError", TechnicalError("resolving this inquiry"));
+            }
+
+            return Json(response);
+        }
+
+        public async Task<JsonResult> Delete(Guid id)
+        {
+            ValidationResponseModel response = new()
+            {
+                Errors = new Dictionary<string, string>()
+            };
+
+            if (!await _inquiryService.Delete(id))
+            {
+                response.Errors.Add("serverError", TechnicalError("deleting this inquiry"));
+            }
 
             return Json(response);
         }

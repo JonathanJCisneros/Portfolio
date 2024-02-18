@@ -1,6 +1,4 @@
-﻿@model List<InquiryModel>
-
-@{
+﻿@{
     #pragma warning disable CS8602
     ViewData["Title"] = "Dashboard";
 }
@@ -13,49 +11,72 @@
     <h1>Welcome @User.Identity.Name!</h1>
     <a asp-controller="User" asp-action="Logout" class="btn btn-danger">Logout</a>
 </header>
-@if(Model.Count > 0)
-{
-    <div class="table-container">
+<div id="dashboard" v-cloak>
+    <div class="server-message" v-if="!loading && message">{{message}}</div>
+    <div class="loader-container" v-if="loading">
+        <div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>        
+    </div>
+    <div class="table-container" v-if="!loading && inquiries.length > 0">
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Status</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Details</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col" class="collapsible">Status</th>
+                    <th scope="col" class="left">Name</th>
+                    <th scope="col" class="collapsible">Email</th>
+                    <th scope="col" class="collapsible">Type</th>
+                    <th scope="col" class="collapsible">Details</th>
+                    <th scope="col" class="right">Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (InquiryModel inquiry in Model)
-                {
-                    <tr>
-                        <td><span class="@(inquiry.Status == Status.Unresolved ? "unresolved" : "resolved")">@inquiry.Status</span></td>
-                        <td><span>@inquiry.Name</span></td>
-                        <td><span><a href="mailto:@inquiry.Email">@inquiry.Email</a></span></td>
-                        <td><span>@inquiry.Type</span></td>
-                        <td><span>@inquiry.Details</span></td>
-                        <td>
-                            <a asp-controller="Dashboard" asp-action="ViewOne" asp-route-id="@inquiry.Id" class="btn btn-outline-primary">View</a>
-                            @if (inquiry.Status == Status.Unresolved)
-                            {
-                                <a asp-controller="Dashboard" asp-action="Resolve" asp-route-id="@inquiry.Id" asp-route-redirect="Dashboard" class="btn btn-outline-success">Resolve</a>
-                            }
-                            else
-                            {
-                                <a asp-controller="Dashboard" asp-action="Delete" asp-route-id="@inquiry.Id" asp-route-errorRedirect="Dashboard" class="btn btn-outline-danger">Delete</a>
-                            }
-                        </td>
-                    </tr>
-                }
+            <tbody v-for="inquiry in inquiries">
+                <tr>
+                    <td class="collapsible status" :class="inquiry.status == 0 ? 'unresolved' : 'resolved'">{{inquiry.statusValue}}</td>
+                    <td class="left">{{inquiry.name}}</td>
+                    <td class="collapsible">
+                        <a :href="'mailto:' + inquiry.email">{{inquiry.email}}</a>
+                    </td>
+                    <td class="collapsible">{{inquiry.typeValue}}</td>
+                    <td class="details collapsible">{{inquiry.details}}</td>
+                    <td class="actions right">
+                        <a :href="'/dashboard/' + inquiry.id" class="btn btn-outline-primary">View</a>
+                        <a href="" class="btn btn-outline-success" v-if="inquiry.status === 0" v-on:click.prevent="resolve(inquiry.id)">Resolve</a>
+                        <a href="" class="btn btn-outline-danger" v-if="inquiry.status === 1" v-on:click.prevent="deleteOne(inquiry.id)">Delete</a>
+                    </td>
+                </tr>
+                <tr class="mobile-only">
+                    <td>
+                        <ul>
+                            <li>Status:</li>
+                            <li>Email:</li>
+                            <li>Type:</li>
+                            <li>Details:</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li class="status" :class="inquiry.status == 0 ? 'unresolved' : 'resolved'">{{inquiry.statusValue}}</li>
+                            <li>
+                                <a :href="'mailto:' + inquiry.email">{{inquiry.email}}</a>
+                            </li>
+                            <li>{{inquiry.typeValue}}</li>
+                            <li class="details">{{inquiry.details}}</li>
+                        </ul>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
-}
-else
-{
-    <div class="no-results">
+    <div class="no-results" v-if="!loading && inquiries.length === 0">
         <h2>You have no inquiries at this time</h2>
     </div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global@(IsDeployed ? ".prod" : "").js"></script>
+    <script src="~/js/dashboard@(Minified()).js" asp-append-version="true"></script>
 }

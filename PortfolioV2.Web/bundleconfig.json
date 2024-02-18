@@ -22,5 +22,11 @@
     "inputFiles": [
       "wwwroot/js/error.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/dashboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/dashboard.js"
+    ]
   }
 ]

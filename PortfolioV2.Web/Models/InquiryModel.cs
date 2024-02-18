@@ -16,8 +16,16 @@ namespace PortfolioV2.Web.Models
         [MaxLength(320, ErrorMessage = "Email is too long")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Type of Inquiry is required")]
+        [Required]
         public InquiryType Type { get; set; }
+
+        public string TypeValue
+        {
+            get
+            {
+                return Type.ToString();
+            }
+        }
 
         [Required(ErrorMessage = "Details are required")]
         [MinLength(4, ErrorMessage = "Details must be at least 4 characters long")]
@@ -26,6 +34,14 @@ namespace PortfolioV2.Web.Models
 
         [Required]
         public Status Status { get; set; } = Status.Unresolved;
+
+        public string StatusValue
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
 
         public InquiryModel() { }
 

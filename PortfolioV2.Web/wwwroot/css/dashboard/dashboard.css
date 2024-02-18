@@ -18,6 +18,57 @@
   }
 }
 
+[v-cloak] {
+  display: none;
+}
+
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+.loader-container > div {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+@media screen and (max-width: 600px) {
+  .loader-container > div {
+    margin-top: 20px;
+  }
+}
+.loader-container > div div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: loader 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.loader-container > div div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.loader-container > div div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.loader-container > div div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 header {
   margin-top: 30px;
   display: flex;
@@ -56,12 +107,15 @@ header > a {
   margin-left: auto;
 }
 
+.server-message {
+  text-align: center;
+  color: red;
+}
+
 .table-container {
   margin-top: 20px;
   background-color: lightgray;
   max-height: 80vh;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
   border: none;
   border-left: 1px solid rgba(255, 255, 255, 0.3);
   border-top: 1px solid rgba(255, 255, 255, 0.3);
@@ -69,23 +123,52 @@ header > a {
   box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s;
 }
-@media screen and (max-width: 1024px) {
-  .table-container {
-    overflow-y: scroll;
-  }
-}
 .table-container:hover {
   box-shadow: 0px 0px 15px black;
 }
-.table-container::-webkit-scrollbar {
+
+@media screen and (max-width: 767px) {
+  th.left, td.left {
+    text-align: left;
+    padding-left: 2.3rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  th.right, td.right {
+    text-align: right;
+    padding-right: 2rem;
+  }
+}
+
+.actions a:first-child {
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 767px) {
+  .collapsible {
+    display: none;
+  }
+}
+
+.mobile-only {
   display: none;
 }
-
-.resolved {
-  color: green;
+@media screen and (max-width: 767px) {
+  .mobile-only {
+    display: table-row;
+  }
+}
+.mobile-only li {
+  list-style-type: none;
 }
 
-.unresolved {
+.status {
+  border-bottom-color: none;
+}
+.status.resolved {
+  color: green;
+}
+.status.unresolved {
   color: red;
 }
 
