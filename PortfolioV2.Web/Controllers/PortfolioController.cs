@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace PortfolioV2.Controllers
 {
@@ -29,12 +30,16 @@ namespace PortfolioV2.Controllers
 
         public IActionResult Home()
         {
+            Log.Information("This is the home page");
+
             return View();
         }
 
         [Route("/error")]
         public IActionResult Error()
         {
+            Log.Error("We have encountered an error");
+
             return View();
         }
 

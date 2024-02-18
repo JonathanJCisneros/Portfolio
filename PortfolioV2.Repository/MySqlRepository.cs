@@ -9,14 +9,16 @@ namespace PortfolioV2.Repository
         #region Fields
 
         protected readonly string connection;
+        private readonly Serilog.ILogger _logger;
 
         #endregion Fields
 
         #region Constructors
 
-        public MySqlRepository(string connectionString)
+        public MySqlRepository(string connectionString, Serilog.ILogger logger)
         {
             connection = connectionString;
+            _logger = logger;
         }
 
         #endregion Constructors
@@ -50,7 +52,7 @@ namespace PortfolioV2.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.Error(ex, "There was a problem connecting to the database");
             }
 
             return false;
@@ -77,7 +79,7 @@ namespace PortfolioV2.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.Error(ex, "There was a problem connecting to the database");
             }
 
             return table;

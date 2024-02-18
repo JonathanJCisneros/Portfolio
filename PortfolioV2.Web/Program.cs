@@ -5,12 +5,20 @@ using PortfolioV2.Service.Interfaces;
 using PortfolioV2.Service;
 using PortfolioV2.Web;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using PortfolioV2.Web.Custom_Code;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IMySqlRepository, MySqlRepository>(x => new MySqlRepository(builder.Configuration.GetConnectionString("Database")));
+builder.Services.AddScoped<IMySqlRepository, MySqlRepository>(x => {
+    return new MySqlRepository(
+        builder.Configuration.GetConnectionString("Database"),
+        Log.Logger
+    );
+});
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
 
@@ -24,10 +32,21 @@ builder.Services.AddRouting(opts => opts.LowercaseUrls = true);
 
 WebApplication? app = builder.Build();
 
+LogInitializer logger = new(
+    builder.Configuration.GetConnectionString("CloudWatchId"),
+    builder.Configuration.GetConnectionString("CloudWatchSecret")
+);
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/error");
     app.UseHsts();
+    app.UseHttpsRedirection();
+    logger.ConfigureLogger("Portfolio.Web");
+}
+else
+{    
+    logger.ConfigureLogger("Portfolio.Web.Development");
 }
 
 app.UseStatusCodePagesWithRedirects("/error");
@@ -44,7 +63,7 @@ app.MapControllerRoute(
 );
 
 app.MapAreaControllerRoute(
-    name: "apiRoutes",
+    name: "api",
     areaName: "api",
     pattern: "api/{controller}/{action}/{id?}"
 );
