@@ -6,6 +6,13 @@ using Serilog;
 
 namespace PortfolioV2.Web.Custom_Code
 {
+    public class AWSConfig
+    {
+        public required string Id { get; set; }
+
+        public required string Secret { get; set; }
+    }
+
     public class LogInitializer
     {
         private readonly string _id;

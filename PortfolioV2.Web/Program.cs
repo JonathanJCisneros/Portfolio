@@ -1,3 +1,5 @@
+#pragma warning disable CS8600
+#pragma warning disable CS8602
 #pragma warning disable CS8604
 using PortfolioV2.Repository.Interfaces;
 using PortfolioV2.Repository;
@@ -9,6 +11,8 @@ using PortfolioV2.Web.Custom_Code;
 using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+AWSConfig awsConfig = builder.Configuration.GetSection("AWSConfig").Get<AWSConfig>();
 
 builder.Services.AddControllersWithViews();
 
@@ -33,8 +37,8 @@ builder.Services.AddRouting(opts => opts.LowercaseUrls = true);
 WebApplication? app = builder.Build();
 
 LogInitializer logger = new(
-    builder.Configuration.GetConnectionString("CloudWatchId"),
-    builder.Configuration.GetConnectionString("CloudWatchSecret")
+    awsConfig.Id,
+    awsConfig.Secret
 );
 
 if (!app.Environment.IsDevelopment())
