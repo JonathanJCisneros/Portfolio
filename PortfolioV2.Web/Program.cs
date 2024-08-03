@@ -25,9 +25,11 @@ builder.Services.AddScoped<IMySqlRepository, MySqlRepository>(x => {
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
+builder.Services.AddScoped<IIPAddressRepository, IPAddressRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInquiryService, InquiryService>();
+builder.Services.AddScoped<IIPAddressService, IPAddressService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opts => opts.LoginPath = "/user/login"); 
 
