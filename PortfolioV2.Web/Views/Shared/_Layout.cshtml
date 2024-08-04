@@ -16,8 +16,9 @@
         <footer>
             <small>&copy; @DateTime.Now.ToString("yyyy"), Jonathan Cisneros. <a href="https://github.com/JonathanJCisneros/Portfolio" target="_blank">GitHub Repo</a></small>
         </footer>
-        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+        <script src="~/js/common@(Minified()).js" asp-append-version="true"></script>
+        <script src="~/lib/jquery/dist/jquery@(Minified()).js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle@(Minified()).js" asp-append-version="true"></script>
         @if (IsDeployed)
         {
             <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js" asp-append-version="true"></script>

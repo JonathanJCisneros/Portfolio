@@ -4,10 +4,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PortfolioV2.Core;
 using PortfolioV2.Service.Interfaces;
 using PortfolioV2.Web.Models;
-using System.Net;
 using System.Security.Claims;
 
 namespace PortfolioV2.Web.Controllers
@@ -17,20 +17,18 @@ namespace PortfolioV2.Web.Controllers
         #region Fields
 
         protected string AuthCode;
-        protected string RegistrationIP;
         private readonly IUserService _userService;
-        private readonly ILogger<UserController> _logger;
+        private readonly IIPAddressService _ipAddressService;
 
         #endregion Fields
 
         #region Constructors
 
-        public UserController(IUserService userService, IConfiguration configuration, ILogger<UserController> logger)
+        public UserController(IConfiguration configuration, IUserService userService, IIPAddressService ipAddressService)
         {
             AuthCode = configuration.GetConnectionString("AdminAuth");
-            RegistrationIP = configuration.GetConnectionString(App.IsDeployed ? "ProductionRegistrationIP" : "LocalRegistrationIP");
             _userService = userService;
-            _logger = logger;
+            _ipAddressService = ipAddressService;
         }
 
         #endregion Constructors
@@ -41,9 +39,9 @@ namespace PortfolioV2.Web.Controllers
         {
             List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.Sid, result.Id),
-                new Claim(ClaimTypes.Name, result.Name),
-                new Claim(ClaimTypes.Email, result.Email)
+                new(ClaimTypes.Sid, result.Id),
+                new(ClaimTypes.Name, result.Name),
+                new(ClaimTypes.Email, result.Email)
             };
 
             ClaimsIdentity claimsIdentity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -60,39 +58,31 @@ namespace PortfolioV2.Web.Controllers
             await HttpContext.SignInAsync(principle, authenticationProperties);
         }
 
-        private bool IsValidIP()
+        private async Task<bool> CheckIP()
         {
-            string? ipAddress = Request.Headers["X_FORWARDED_FOR"];
+            string? cookie = Request.Cookies["user_ip"];
 
-            ipAddress ??= Request.Headers["HTTP_X_FORWARDED_FOR"];
-
-            ipAddress ??= HttpContext.Request.Headers["REMOTE_ADDR"];
-
-            if (String.IsNullOrEmpty(ipAddress))
+            if (String.IsNullOrWhiteSpace(cookie))
             {
-                string hostName = Dns.GetHostName();
-
-                IPHostEntry ipHostEntries = Dns.GetHostEntry(hostName);
-
-                IPAddress[] ipAddresses = ipHostEntries.AddressList;
-
-                if (ipAddresses == null || ipAddresses.Length == 0)
-                {
-                    ipAddresses = Dns.GetHostAddresses(hostName);
-                }
-
-                return ipAddresses.Any(x => x.ToString() == RegistrationIP);
+                return false;
             }
 
-            return ipAddress == RegistrationIP;
+            IPResponse response = JsonConvert.DeserializeObject<IPResponse>(cookie);
+
+            return await _ipAddressService.IsValidIPAddress(response.IP);
         }
 
         #endregion Private Methods
 
         #region Public Methods/Actions
 
-        public IActionResult Login(string? error = null)
+        public async Task<IActionResult> Login(string? error = null)
         {
+            if (!await CheckIP())
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Dashboard", "Dashboard");
@@ -106,18 +96,23 @@ namespace PortfolioV2.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model, string? returnUrl)
         {
+            if (!await CheckIP())
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
             model = model.Format(); 
             
             if (!ModelState.IsValid)
             {
-                return Login();
+                return await Login();
             }
 
             AuthorizeResult status = await _userService.Authorize(model.Email, model.Password);
 
             if (!status.IsAuthorized)
             {                
-                return Login("Your login cridentials are invalid");
+                return await Login("Your login cridentials are invalid");
             }
 
             await SetAuthCookie(status);
@@ -130,16 +125,19 @@ namespace PortfolioV2.Web.Controllers
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register(string? error = null)
         {
+            if (!await CheckIP())
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Dashboard", "Dashboard");
             }
-            else if (!IsValidIP())
-            {
-                return RedirectToAction("Error", "Portfolio");
-            }
+
+            TempData["Error"] = error;
 
             return View();
         }
@@ -147,17 +145,22 @@ namespace PortfolioV2.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
+            if (!await CheckIP())
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
             model = model.Format();
             
             if (!ModelState.IsValid)
             {
-                return Register();
+                return await Register();
             }
             else if (model.AdminPass.ToString() != AuthCode)
             {
                 ModelState.AddModelError("AdminPass", "is invalid");
 
-                return Register();
+                return await Register();
             }
 
             User? dbUser = await _userService.CheckByEmail(model.Email);
@@ -166,14 +169,14 @@ namespace PortfolioV2.Web.Controllers
             {
                 ModelState.AddModelError("Email", "is already in use");
 
-                return Register();
+                return await Register();
             }
 
             User user = model.ToUser();
 
             if (!await _userService.Create(user)) 
             {
-                return Register();
+                return await Register();
             }
 
             await SetAuthCookie(new AuthorizeResult(user));

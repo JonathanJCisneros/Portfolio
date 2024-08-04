@@ -28,5 +28,11 @@
     "inputFiles": [
       "wwwroot/js/dashboard.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/common.min.js",
+    "inputFiles": [
+      "wwwroot/js/common.js"
+    ]
   }
 ]
